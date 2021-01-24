@@ -10,8 +10,32 @@ class Controller{
         this.video=el.video
         this.file=el.file
     }
+    updateTask(files){
+        let promises=[];
+        [...files].forEach(file => {
+            promises.push(new Promise((re,rej)=>{
+                let ajax = new XMLHttpRequest()
+                ajax.open("POST","/upload")
+                ajax.onload=events=>{
+                    try {
+                        re(JSON.parse(ajax.responseText))
+                    } catch (error) {
+                        rej(error)
+                        
+                    }
+                }
+                ajax.onerror=e=>{
+                    rej(e)
+                }
+                let formdata = new FormData()
+                formdata.append("video",file)
+                ajax.send()
+            }))
+        });
+        return Promise.all(promises)
+    }
     all(){
-        this.file.addEventListener("change",e=>{this.target(this.video,e)})
+        this.file.addEventListener("change",e=>{/* this.target(this.video,e) */ this.updateTask(e.target.files)})
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
     connectDatabase(){
@@ -48,6 +72,7 @@ class Controller{
                 document.querySelector("progress").value=e.loaded*100/e.total
             })
             file.readAsDataURL(e.target.files[0],file)
+           
     }
     get file(){return this._file}
     set file(value){this._file=value}

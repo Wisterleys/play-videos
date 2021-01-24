@@ -2,9 +2,9 @@ class Controller{
     constructor(el){
         this._video;
         this._file;
-        this.toAssign(el)
-        this.all()
         this.connectDatabase()
+        this.toAssign(el)
+        this.initializeEvents()
     }
     toAssign(el){
         this.video=el.video
@@ -29,50 +29,65 @@ class Controller{
                 }
                 let formdata = new FormData()
                 formdata.append("video",file)
-                ajax.send()
+                ajax.send(formdata)
             }))
         });
         return Promise.all(promises)
     }
-    all(){
-        this.file.addEventListener("change",e=>{/* this.target(this.video,e) */ this.updateTask(e.target.files)})
+    initializeEvents(){
+        this.file.addEventListener("change",e=>{
+            /*  this.updateTask(e.target.files)
+             .then(ress=>{
+                ress.forEach(resp=>{
+                    console.log(resp.files["input-file"])
+                })
+             })
+             .catch(err=>{console.error(err)}) */
+             this.target(e.target.files)
+            })
+            
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
-    connectDatabase(){
-         // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyC5KGA89n_JtT1U4C6eQfqhZ4rW7IlhuNc",
-            authDomain: "play-fb088.firebaseapp.com",
-            databaseURL: "https://play-fb088-default-rtdb.firebaseio.com",
-            projectId: "play-fb088",
-            storageBucket: "play-fb088.appspot.com",
-            messagingSenderId: "727436387567",
-            appId: "1:727436387567:web:263637f2a913ccd0bbe71a",
-            measurementId: "G-Y1SBWR29GE"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
+    getFireBaseRef(){
+        console.dir(firebase)
+        return firebase.database().ref("file")
     }
-    target(el,e){
+    target(/* el, */e){
         let file = new FileReader()
             file.onload=()=>{
                 document.querySelector("progress").hidden=true
                /*  el.src=file.result
                 el.currentTime=0
                 el.play() */
-                document.querySelector("p").innerHTML=`<marquee>${e.target.files[0].name}</marquee>`
+               /*  document.querySelector("p").innerHTML=`<marquee>${e.target.files[0].name}</marquee>`
                 setInterval(()=>{
                    el.currentTime>431.152382?el.currentTime=0:0
-                },1000)
+                },1000) */
+                this.getFireBaseRef().push().set(e[0])
             }
             file.addEventListener("progress",e=>{
                 document.querySelector("progress").hidden=false
                 document.querySelector("progress").value=e.loaded*100/e.total
             })
-            file.readAsDataURL(e.target.files[0],file)
+            file.readAsDataURL(e[0])
            
+    }
+    connectDatabase(){
+         // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyDEtpfo5eeBYub1fgCLKM_SMv4ZzmfBAgw",
+            authDomain: "play-9775f.firebaseapp.com",
+            databaseURL: "https://play-9775f-default-rtdb.firebaseio.com",
+            projectId: "play-9775f",
+            storageBucket: "play-9775f.appspot.com",
+            messagingSenderId: "833926432231",
+            appId: "1:833926432231:web:37f9b6a2962c8c79802942",
+            measurementId: "G-LDM79RVMSZ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
     }
     get file(){return this._file}
     set file(value){this._file=value}

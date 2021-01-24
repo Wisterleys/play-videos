@@ -10,17 +10,13 @@ class Controller{
         this.file=el.file
     }
     all(){
-        this.file.addEventListener("change",e=>{
-            this.target(this.video,e)
-            
-        })
-        document.querySelector("button").addEventListener("click",e=>{
-            this.file.click()
-        })
+        this.file.addEventListener("change",e=>{this.target(this.video,e)})
+        document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
     target(el,e){
         let file = new FileReader()
             file.onload=()=>{
+                document.querySelector("progress").hidden=true
                 el.src=file.result
                 el.currentTime=0
                 el.play()
@@ -29,6 +25,10 @@ class Controller{
                    el.currentTime>431.152382?el.currentTime=0:0
                 },1000)
             }
+            file.addEventListener("progress",e=>{
+                document.querySelector("progress").hidden=false
+                document.querySelector("progress").value=e.loaded*100/e.total
+            })
             file.readAsDataURL(e.target.files[0],file)
     }
     get file(){return this._file}

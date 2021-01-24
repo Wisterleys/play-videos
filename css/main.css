@@ -7,6 +7,7 @@ main article #video{width: 70%;float:left;background-color:rgba(236, 243, 238, 0
 main article #video p{width: 70%;text-align: center;}
 main article #video video{width: 100%;}
 main article #video p{width: 100%;padding: 0;margin: 0;}
+main article #video progress{width: 100%;padding: 0;margin: 0;}
 main article #control{width: 25%;float:right;background-color: rgba(0, 0, 0, 0.308)}
 main footer {width: 100%;float: left;clear: both;color: white;font-family: monospace;}
 main footer header{width: 100%;padding: 0;margin: 0;}

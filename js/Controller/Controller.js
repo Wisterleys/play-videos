@@ -49,8 +49,8 @@ class Controller{
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
     getFireBaseRef(){
-        console.dir(firebase)
-        return firebase.database().ref("file")
+        
+        return firebase.database().ref("files")
     }
     target(/* el, */e){
         let file = new FileReader()
@@ -63,7 +63,8 @@ class Controller{
                 setInterval(()=>{
                    el.currentTime>431.152382?el.currentTime=0:0
                 },1000) */
-                this.getFireBaseRef().push().set(e[0])
+                console.log(e)
+                this.getFireBaseRef().push().set({name:e[0].name,size:e[0].size,type:e[0].type})
             }
             file.addEventListener("progress",e=>{
                 document.querySelector("progress").hidden=false
@@ -73,22 +74,22 @@ class Controller{
            
     }
     connectDatabase(){
-         // Your web app's Firebase configuration
+       // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        var firebaseConfig = {
-            apiKey: "AIzaSyDEtpfo5eeBYub1fgCLKM_SMv4ZzmfBAgw",
-            authDomain: "play-9775f.firebaseapp.com",
-            databaseURL: "https://play-9775f-default-rtdb.firebaseio.com",
-            projectId: "play-9775f",
-            storageBucket: "play-9775f.appspot.com",
-            messagingSenderId: "833926432231",
-            appId: "1:833926432231:web:37f9b6a2962c8c79802942",
-            measurementId: "G-LDM79RVMSZ"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-    }
+            var firebaseConfig = {
+                apiKey: "AIzaSyDEtpfo5eeBYub1fgCLKM_SMv4ZzmfBAgw",
+                authDomain: "play-9775f.firebaseapp.com",
+                databaseURL: "https://play-9775f-default-rtdb.firebaseio.com",
+                projectId: "play-9775f",
+                storageBucket: "play-9775f.appspot.com",
+                messagingSenderId: "833926432231",
+                appId: "1:833926432231:web:37f9b6a2962c8c79802942",
+                measurementId: "G-LDM79RVMSZ"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        }
     get file(){return this._file}
     set file(value){this._file=value}
     get video(){return this._video}

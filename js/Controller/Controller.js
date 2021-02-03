@@ -5,6 +5,7 @@ class Controller{
         this.connectDatabase()
         this.toAssign(el)
         this.initializeEvents()
+        this.readFiles()
     }
     toAssign(el){
         this.video=el.video
@@ -13,44 +14,51 @@ class Controller{
     updateTask(files){
         let promises=[];
         [...files].forEach(file => {
+            
             promises.push(new Promise((re,rej)=>{
-                let ajax = new XMLHttpRequest()
-                ajax.open("POST","/upload")
-                ajax.onload=events=>{
-                    try {
-                        re(JSON.parse(ajax.responseText))
-                    } catch (error) {
-                        rej(error)
-                        
-                    }
-                }
-                ajax.onerror=e=>{
-                    rej(e)
-                }
-                let formdata = new FormData()
-                formdata.append("video",file)
-                ajax.send(formdata)
+                console.log(file, file.name)
+                let fileRef = firebase.storage().ref("/files").child(file.name)
+                console.log(fileRef)
+                let task = fileRef.push(file)
+                task.on("state_changed",snapshot=>{
+                    conssole.log(snapshot)
+                },erro=>{
+                    rej(erro)
+                },()=>{
+                    re()
+                })
+                /* let formdata = new FormData()
+                formdata.append("video",file) */
+               
             }))
         });
         return Promise.all(promises)
     }
     initializeEvents(){
         this.file.addEventListener("change",e=>{
-            /*  this.updateTask(e.target.files)
+             this.updateTask(e.target.files)
              .then(ress=>{
                 ress.forEach(resp=>{
                     console.log(resp.files["input-file"])
                 })
              })
-             .catch(err=>{console.error(err)}) */
-             this.target(e.target.files)
+             .catch(err=>{console.error(err)})
+             /* console.dir(e.target.files)
+             this.target(e.target.files) */
             })
             
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
-    getFireBaseRef(){
+    getFireBaseRef(reff="data"){
         
-        return firebase.database().ref("files")
+        return firebase.database().ref(reff)
+    }
+    readFiles(){
+        this.getFireBaseRef().on("value",snapshot=>{
+            snapshot.forEach(snapshotItem=>{
+                console.log(snapshotItem.key,snapshotItem.val())
+            })
+        })
     }
     target(/* el, */e){
         let file = new FileReader()
@@ -63,8 +71,8 @@ class Controller{
                 setInterval(()=>{
                    el.currentTime>431.152382?el.currentTime=0:0
                 },1000) */
-                console.log(e)
-                this.getFireBaseRef().push().set({name:e[0].name,size:e[0].size,type:e[0].type})
+                console.log(JSON.stringify(e[0]))
+                this.getFireBaseRef("files").push().set(e[0])
             }
             file.addEventListener("progress",e=>{
                 document.querySelector("progress").hidden=false

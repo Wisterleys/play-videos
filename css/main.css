@@ -4,12 +4,11 @@ main header{width: 100%;background-color:rgba(0, 0, 0, 0.253);color:white;margin
 main header h1{margin:0;padding: 0;text-align: center;float: left;}
 main header button{margin:0;padding: 5px;float: right;}
 main article{width: 100%;margin:auto;overflow: hidden;}
-main article #video{width: 70%;float:left;background-color:rgba(236, 243, 238, 0.733)}
+main article #video{position:absolute; width: 90%;background-color:rgba(236, 243, 238, 0.733);display: none;}
 main article #video p{width: 70%;text-align: center;}
 main article #video video{width: 100%;}
 main article #video p{width: 100%;padding: 0;margin: 0;}
 main article #video progress{width: 100%;padding: 0;margin: 0;}
-main article #control{width: 30%;height:600px;float:right;background-color: rgba(0, 0, 0, 0.308)}
 main footer {width: 100%;float: left;clear: both;color: white;font-family: monospace;}
 main footer header{width: 100%;padding: 0;margin: 0;}
 main footer article{width: 100%;}

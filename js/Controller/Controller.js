@@ -38,6 +38,13 @@ class Controller{
         });
         return Promise.all(promises)
     }
+    tocar(){
+        document.querySelector("p").innerHTML=`<marquee>${resp.name}</marquee>`
+        document.querySelector("video").src=""
+        document.querySelector("video").currentTime=0
+        document.querySelector("video").play()
+                    
+    }
     initializeEvents(){
         this.file.addEventListener("change",e=>{
              this.updateTask(e.target.files)
@@ -45,11 +52,16 @@ class Controller{
                 document.querySelector("progress").hidden=true
                 
                 ress.forEach(resp=>{
-                    document.querySelector("p").innerHTML=`<marquee>${resp.name}</marquee>`
-                    document.querySelector("video").src=resp.customMetadata.downloadURL
-                    document.querySelector("video").currentTime=0
-                    document.querySelector("video").play()
                     
+                    this.getFireBaseRef("files").push().set({
+                        nameFile:resp.name,
+                        type:resp.type,
+                        contentType:resp.contentType,
+                        updated:resp.updated,
+                        size:resp.size,
+                        currentTime:"",
+                        urlFile:resp.customMetadata.downloadURL
+                    })
                  
                 })
              })
@@ -59,7 +71,7 @@ class Controller{
             
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
-    getFireBaseRef(reff="data"){
+    getFireBaseRef(reff="files"){
         
         return firebase.database().ref(reff)
     }
@@ -67,30 +79,16 @@ class Controller{
         this.getFireBaseRef().on("value",snapshot=>{
             snapshot.forEach(snapshotItem=>{
                 console.log(snapshotItem.key,snapshotItem.val())
+                for(let key in snapshotItem.val()){
+                    if(key=="urlFile"){
+                        console.log(snapshotItem.val()[key])
+                        document.querySelector("video").src=snapshotItem.val()[key]
+                    }
+                }
             })
         })
     }
-    target(/* el, */e){
-        let file = new FileReader()
-            file.onload=()=>{
-                document.querySelector("progress").hidden=true
-               /*  el.src=file.result
-                el.currentTime=0
-                el.play() */
-               /*  document.querySelector("p").innerHTML=`<marquee>${e.target.files[0].name}</marquee>`
-                setInterval(()=>{
-                   el.currentTime>431.152382?el.currentTime=0:0
-                },1000) */
-                console.log(JSON.stringify(e[0]))
-                this.getFireBaseRef("files").push().set(e[0])
-            }
-            file.addEventListener("progress",e=>{
-                document.querySelector("progress").hidden=false
-                document.querySelector("progress").value=e.loaded*100/e.total
-            })
-            file.readAsDataURL(e[0])
-           
-    }
+   
     connectDatabase(){
        // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional

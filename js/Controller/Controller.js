@@ -15,21 +15,25 @@ class Controller{
         let promises=[];
         [...files].forEach(file => {
             
-            promises.push(new Promise((re,rej)=>{
-                console.log(file, file.name)
+            promises.push(new Promise((resolve,reject)=>{
                 let fileRef = firebase.storage().ref("/files").child(file.name)
-                console.log(fileRef)
-                let task = fileRef.push(file)
+              
+                let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
-                    conssole.log(snapshot)
+                    document.querySelector("progress").hidden=false
+                    document.querySelector("progress").value=snapshot._delegate.bytesTransferred*100/snapshot._delegate.totalBytes
                 },erro=>{
-                    rej(erro)
+                    reject(erro)
                 },()=>{
-                    re()
+                    task.snapshot.ref.getDownloadURL().then(downloadURL=>{
+                        task.snapshot.ref.updateMetadata({ customMetadata: { downloadURL }}).then(metadata=>{
+                         resolve(metadata)
+                       }).catch( error => {
+                         console.error( 'Error update metadata:', error)
+                         reject( error ) 
+                       })
+                    })
                 })
-                /* let formdata = new FormData()
-                formdata.append("video",file) */
-               
             }))
         });
         return Promise.all(promises)
@@ -38,13 +42,19 @@ class Controller{
         this.file.addEventListener("change",e=>{
              this.updateTask(e.target.files)
              .then(ress=>{
+                document.querySelector("progress").hidden=true
+                
                 ress.forEach(resp=>{
-                    console.log(resp.files["input-file"])
+                    document.querySelector("p").innerHTML=`<marquee>${resp.name}</marquee>`
+                    document.querySelector("video").src=resp.customMetadata.downloadURL
+                    document.querySelector("video").currentTime=0
+                    document.querySelector("video").play()
+                    
+                 
                 })
              })
              .catch(err=>{console.error(err)})
-             /* console.dir(e.target.files)
-             this.target(e.target.files) */
+           
             })
             
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})

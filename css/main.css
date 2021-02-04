@@ -4,7 +4,8 @@ main header{width: 100%;background-color:rgba(0, 0, 0, 0.253);color:white;margin
 main header h1{margin:0;padding: 0;text-align: center;float: left;}
 main header button{margin:0;padding: 5px;float: right;}
 main article{width: 100%;margin:auto;overflow: hidden;}
-main article #video{position:absolute; width: 90%;background-color:rgba(236, 243, 238, 0.733);display: none;}
+main article #video{position:absolute;top:0px;width: 80%;height:80%;background-color:rgba(236, 243, 238, 0.733);transform: translate(10%,10%);z-index: 0;}
+main article #video video,iframe{width: 100%;height:100%;}
 main article #video p{width: 70%;text-align: center;}
 main article #video video{width: 100%;}
 main article #video p{width: 100%;padding: 0;margin: 0;}
@@ -19,3 +20,31 @@ main footer article aside #git{width:50%;float: left;margin:5px 0;padding:0;}
 main footer article aside #git img{width: 20%;margin:0;padding:0;}
 main footer article aside #face{width:50%;float: right;margin:0;padding:0;}
 main footer article aside #face img{width: 25%;margin:0;padding:0;}
+#playList{
+    width: 100%;
+    padding: 0;
+    margin:auto;
+    list-style: none;
+    align-items: center;
+}
+#playList li{
+    display: inline-block;
+    margin:0px;
+}
+/* MODAL childs */
+.x{
+    position: absolute;top:0px;left: 100%;width: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    transform: translate(-50%,-25%);
+    padding: 3px;
+    font-size: 100%;background-color: black;color: white;
+    transition: background .5s;
+    border:1px solid white;
+    border-radius: 360px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+}
+.x:hover{
+    background-color: red;
+}

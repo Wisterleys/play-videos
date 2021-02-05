@@ -88,7 +88,7 @@ class Controller{
                 console.log(JSON.stringify(snapshotItem.val()))
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
-                let img = this.createEl(el.querySelector("figure"),"img","src","_img/icone-video.png")
+                let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")
                 el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
                 img.dataset.key=JSON.stringify(snapshotItem.val())
                 console.log(JSON.stringify(snapshotItem.val()))

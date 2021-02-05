@@ -107,8 +107,8 @@ class Controller{
     }
     loadPlaylist(){
         this.getFireBaseRef().on("value",snapshot=>{
+            this.playList.innerHTML=''
             snapshot.forEach(snapshotItem=>{
-                //this.playList.innerHTML=''
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
                 let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")

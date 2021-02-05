@@ -1,0 +1,19 @@
+.fixed{
+    transform: translate(-150%,10%);
+}
+.close{
+    transform: translate(-150%,10%);
+    animation: close 1s;   
+}
+@keyframes close{
+    from{transform: translate(10%,10%);}
+    to{transform: translate(-150%,10%);}
+}
+.opeen{
+    transform: translate(10%,10%);
+    animation: opeen 1s;   
+}
+@keyframes opeen{
+    from{transform: translate(-150%,10%);}
+    to{transform: translate(10%,10%);}
+}

@@ -2,17 +2,36 @@ class Controller{
     constructor(el){
         this._video;
         this._file;
+        this._modalVideo=document.querySelector("#video")
         this._playList=document.querySelector("#playList")
         this.connectDatabase()
         this.toAssign(el)
         this.initializeEvents()
         this.loadPlaylist()
     }
-    listener(element){
+    listenerList(element){
         element.forEach(el=>{
-            el.addEventListener("click",e=>this.getData(e))
+            el.addEventListener("click",e=>{
+                this.modalMoveOpen(e)
+            })
         });
-   
+    }
+    listenerClose(){
+        this.modalVideo.addEventListener("click",e=>{
+            this.modalMoveClose(e)
+        })
+    }
+    modalMoveClose(el){
+        this.modalVideo.setAttribute("class","close")
+        this.video.pause()
+        this.video.src=''
+    }
+    modalMoveOpen(el){
+        if(this.getData(el)){
+            this.modalVideo.setAttribute("class","opeen")
+            this.video.play()
+        }
+       
     }
     toAssign(el){
         this.video=el.video
@@ -27,9 +46,12 @@ class Controller{
         return el;
     }
     getData(data){
-        let obj = JSON.parse(data.target.dataset.key)
-        this.video.src=obj.urlFile
-        this.video.parentNode.querySelector("marquee").innerHTML=obj.nameFile
+       if(data.target.dataset.key){
+            let obj = JSON.parse(data.target.dataset.key)
+            this.video.src=obj.urlFile
+            this.video.parentNode.querySelector("marquee").innerHTML=obj.nameFile
+            return true
+        }else{return false}
     }
     updateTask(files){
         let promises=[];
@@ -86,13 +108,15 @@ class Controller{
     loadPlaylist(){
         this.getFireBaseRef().on("value",snapshot=>{
             snapshot.forEach(snapshotItem=>{
+                this.playList.innerHTML=''
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
                 let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")
                 img.dataset.key=JSON.stringify(snapshotItem.val())
                 el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
             })
-            this.listener(this.playList.querySelectorAll("img"))
+            this.listenerList(this.playList.querySelectorAll("img"))
+            this.listenerClose()
         })
     }
    
@@ -112,7 +136,9 @@ class Controller{
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-        }
+    }
+    get modalVideo(){return this._modalVideo}
+    set modalVideo(value){this._modalVideo=value}
     get playList(){return this._playList}
     set playList(value){this._playList=value}
     get playList(){return this._playList}

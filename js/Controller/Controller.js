@@ -2,22 +2,39 @@ class Controller{
     constructor(el){
         this._video;
         this._file;
+        this._playList=document.querySelector("#playList")
         this.connectDatabase()
         this.toAssign(el)
         this.initializeEvents()
-        this.readFiles()
+        this.loadPlaylist()
+    }
+    listener(element){
+        element.forEach(el=>{
+            el.addEventListener("click",e=>this.getData(e))
+            console.log("disparou!")
+        });
+   
     }
     toAssign(el){
         this.video=el.video
         this.file=el.file
     }
+    createEl(parentEl,nameEl,attEl,valeuEl){
+        let el = document.createElement(nameEl)
+        let att = document.createAttribute(attEl)
+        att.value=valeuEl
+        el.setAttributeNode(att)
+        parentEl.appendChild(el)
+        return el;
+    }
+    getData(data){
+        console.log(data.target.dataset)
+    }
     updateTask(files){
         let promises=[];
         [...files].forEach(file => {
-            
             promises.push(new Promise((resolve,reject)=>{
                 let fileRef = firebase.storage().ref("/files").child(file.name)
-              
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
                     document.querySelector("progress").hidden=false
@@ -38,21 +55,12 @@ class Controller{
         });
         return Promise.all(promises)
     }
-    tocar(){
-        document.querySelector("p").innerHTML=`<marquee>${resp.name}</marquee>`
-        document.querySelector("video").src=""
-        document.querySelector("video").currentTime=0
-        document.querySelector("video").play()
-                    
-    }
     initializeEvents(){
         this.file.addEventListener("change",e=>{
              this.updateTask(e.target.files)
              .then(ress=>{
                 document.querySelector("progress").hidden=true
-                
                 ress.forEach(resp=>{
-                    
                     this.getFireBaseRef("files").push().set({
                         nameFile:resp.name,
                         type:resp.type,
@@ -62,7 +70,6 @@ class Controller{
                         currentTime:"",
                         urlFile:resp.customMetadata.downloadURL
                     })
-                 
                 })
              })
              .catch(err=>{console.error(err)})
@@ -75,17 +82,18 @@ class Controller{
         
         return firebase.database().ref(reff)
     }
-    readFiles(){
+    loadPlaylist(){
         this.getFireBaseRef().on("value",snapshot=>{
             snapshot.forEach(snapshotItem=>{
-                console.log(snapshotItem.key,snapshotItem.val())
-                for(let key in snapshotItem.val()){
-                    if(key=="urlFile"){
-                        console.log(snapshotItem.val()[key])
-                        document.querySelector("video").src=snapshotItem.val()[key]
-                    }
-                }
+                console.log(JSON.stringify(snapshotItem.val()))
+                let el = this.createEl(this.playList,"li","class","list")
+                el.innerHTML=`<figure></figure>`
+                let img = this.createEl(el.querySelector("figure"),"img","src","_img/icone-video.png")
+                el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
+                img.dataset.key=JSON.stringify(snapshotItem.val())
+                console.log(JSON.stringify(snapshotItem.val()))
             })
+            this.listener(this.playList.querySelectorAll("img"))
         })
     }
    
@@ -106,6 +114,8 @@ class Controller{
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
         }
+    get playList(){return this._playList}
+    set playList(value){this._playList=value}
     get file(){return this._file}
     set file(value){this._file=value}
     get video(){return this._video}

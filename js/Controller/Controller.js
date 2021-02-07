@@ -111,6 +111,7 @@ class Controller{
             snapshot.forEach(snapshotItem=>{
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
+                el.querySelector("figure").innerHTML+=`<div class="info_box">X</div>`
                 let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")
                 img.dataset.key=JSON.stringify(snapshotItem.val())
                 el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`

@@ -20,6 +20,7 @@
 .box_open{
     transform: translate(150%,50%);
     animation: box_open 1s;
+    display: block;
 }
 @keyframes box_open{
     from{transform: translate(150%,-150%);}
@@ -28,6 +29,7 @@
 .box_close{
     transform: translate(150%,-150%);
     animation: box_close 1s;
+    display: block;
 }
 @keyframes box_close{
     from{transform:translate(150%,50%);}

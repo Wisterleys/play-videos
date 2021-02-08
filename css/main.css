@@ -47,6 +47,11 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
 }
 #playList li figure img{
     width: 50%;
+    cursor: pointer;
+}
+#playList li figure img:hover{
+    background: url("https://cdn3.iconfinder.com/data/icons/iconic-1/32/play_alt-512.png");
+    
 }
 figcaption{
     padding: 0;
@@ -59,10 +64,10 @@ figcaption{
 }
 figcaption:hover{
     background: black;
-    height: auto;
-    /* overflow:visible; */
+    height: 100%;
 }
 /* MODAL childs */
+
 .x{
     position: absolute;top:0px;left: 100%;width: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -82,17 +87,34 @@ figcaption:hover{
 .info_box{
     width: calc(100%/5);
     float: right;
-    background-color: red;
+    font-size: 100%;background-color: black;color: white;
+    border:1px solid white;
+    transition: background .5s;
+    border-radius: 360px;
+    text-align: center;
+    cursor: pointer;
+}
+.info_box:hover{
+    background-color: rgb(199, 12, 12);
 }
 .box{
     position: fixed;
-    width: 200px;
-    padding: 10px;
+    width: 250px;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     background: rgb(240, 234, 226);
     border-radius: 11.25px;
+    display: none;
 }
-.box header{background-color: rgb(189, 32, 32);border-radius: 11.25px;}
+#false{
+    background: rgb(30, 121, 37);
+    color: white;
+}
+#true{
+    background: rgb(121, 30, 30);
+    color: white;
+}
+.box article{width: 95%; padding: 2px;}
+.box header{background-color: rgb(189, 32, 32);width: 100%;margin:0px;}
 .box header h1{text-align: center;float: none;}
 .box p{text-align: justify;}
 .box ul{list-style: none;display: flex;padding: 1;}

@@ -8,13 +8,56 @@ class Controller{
         this.toAssign(el)
         this.initializeEvents()
         this.loadPlaylist()
+        this.listenerInfoBoxClose()
     }
     listenerList(element){
         element.forEach(el=>{
+            el.addEventListener("mouseover",e=>{
+                e.target.src="img/video-icon-red.png"
+            })
+            el.addEventListener("mouseout",e=>{
+                e.target.src="img/video-icon-black.png"
+            })
             el.addEventListener("click",e=>{
                 this.modalMoveOpen(e)
             })
         });
+    }
+    listenerInfoBox(){
+        document.querySelectorAll(".info_box").forEach(el=>{el.addEventListener("click",e=>{
+            document.querySelector(".box_close")? document.querySelector(".box").classList.remove("box_close"):0
+            document.querySelector(".box").classList.add("box_open")
+            let name = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)["nameFile"].replace(/[\ ]/ig,"")
+            document.querySelector(".box article p span").innerText= name
+        })})
+    }
+    listenerInfoBoxClose(){
+        document.querySelector("#false").addEventListener("click",e=>{
+            document.querySelector(".box").classList.remove("box_open")
+            document.querySelector(".box").classList.add("box_close")
+        })
+        document.querySelector("#true").addEventListener("click",e=>{
+            document.querySelector("#false").disabled=true
+            document.querySelector("#true").disabled=true
+            e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="green"
+            e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Removido"
+            let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
+            e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:50%;margin:auto;'/>"
+            e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
+            
+
+           setTimeout(()=>{
+            document.querySelector(".box").classList.remove("box_open")
+            document.querySelector(".box").classList.add("box_close")
+            document.querySelector("#false").disabled=false
+            document.querySelector("#true").disabled=false
+            setTimeout(()=>{
+                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
+                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
+                e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML=p
+            },1000)
+           },5000)
+        })
     }
     listenerClose(){
         this.modalVideo.querySelector(".x").addEventListener("click",e=>{
@@ -111,12 +154,13 @@ class Controller{
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
                 el.querySelector("figure").innerHTML+=`<div class="info_box">X</div>`
-                let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")
+                let img = this.createEl(el.querySelector("figure"),"img","src","img/video-icon-black.png")
                 img.dataset.key=JSON.stringify(snapshotItem.val())
                 el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
             })
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()
+            this.listenerInfoBox()
         })
     }
    

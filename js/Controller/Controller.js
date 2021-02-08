@@ -107,10 +107,11 @@ class Controller{
     }
     loadPlaylist(){
         this.getFireBaseRef().on("value",snapshot=>{
-            this.playList.innerHTML=''
+            snapshot.val()?this.playList.innerHTML='':0
             snapshot.forEach(snapshotItem=>{
                 let el = this.createEl(this.playList,"li","class","list")
                 el.innerHTML=`<figure></figure>`
+                el.querySelector("figure").innerHTML+=`<div class="info_box">X</div>`
                 let img = this.createEl(el.querySelector("figure"),"img","src","img/icone-video.png")
                 img.dataset.key=JSON.stringify(snapshotItem.val())
                 el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
@@ -139,8 +140,6 @@ class Controller{
     }
     get modalVideo(){return this._modalVideo}
     set modalVideo(value){this._modalVideo=value}
-    get playList(){return this._playList}
-    set playList(value){this._playList=value}
     get playList(){return this._playList}
     set playList(value){this._playList=value}
     get file(){return this._file}

@@ -17,13 +17,12 @@ class Controller{
         });
     }
     listenerClose(){
-        this.modalVideo.addEventListener("click",e=>{
-            this.modalMoveClose(e)
+        this.modalVideo.querySelector(".x").addEventListener("click",e=>{
+            this.modalMoveClose()
         })
     }
-    modalMoveClose(el){
+    modalMoveClose(){
         this.modalVideo.setAttribute("class","close")
-        this.video.pause()
         this.video.src=''
     }
     modalMoveOpen(el){

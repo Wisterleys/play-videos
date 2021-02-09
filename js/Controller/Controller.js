@@ -2,6 +2,7 @@ class Controller{
     constructor(el){
         this._video;
         this._file;
+        this._currentDataset
         this._modalVideo=document.querySelector("#video")
         this._playList=document.querySelector("#playList")
         this.connectDatabase()
@@ -23,22 +24,42 @@ class Controller{
             })
         });
     }
-    updateFirebase(){
-        
+    deleteStorage(json){
+        return new Promise((resolve,reject)=>{
+            firebase.storage().ref("/files").child(json.nameFile).delete()
+            .then(res=>{
+            this.deleteFirebase(json.key)
+                resolve(res)
+            })
+            .catch(erro=>{reject(erro)})
+            })
+    }
+    deleteFirebase(key){
+         this.getFireBaseRef().child(key).remove()
+     }
+    updateFirebase(json,name){
+       if(name){
+        json.name=name
+        this.getFireBaseRef().child(json.key).set(json)
+       }
     }
     listenerFigcaption(){
         document.querySelectorAll("figcaption").forEach(el=>{
             el.addEventListener("dblclick",e=>{
-                e.target.style.height="200px"
+                let obj=e.target.parentNode.querySelector("img").dataset.key?JSON.parse(e.target.parentNode.querySelector("img").dataset.key):""
+                let name = e.target.innerText
+                e.target.style.height="100px"
                 e.target.contentEditable=true
                 e.target.addEventListener("blur",e=>{
                     e.target.style.height=""
                     e.target.contentEditable=false
+                    e.target.innerText&&obj?this.updateFirebase(obj,e.target.innerText):e.target.innerText=name
                 })
                 e.target.addEventListener("keyup",e=>{
                     if(e.key=="Enter"){
                         e.target.style.height=""
                         e.target.contentEditable=false
+                        e.target.innerText&&obj?this.updateFirebase(obj,e.target.innerText):e.target.innerText=name
                     }
                 })
             })
@@ -48,8 +69,9 @@ class Controller{
         document.querySelectorAll(".info_box").forEach(el=>{el.addEventListener("click",e=>{
             document.querySelector(".box_close")? document.querySelector(".box").classList.remove("box_close"):0
             document.querySelector(".box").classList.add("box_open")
-            let name = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)["nameFile"].replace(/[\ ]/ig,"")
-            document.querySelector(".box article p span").innerText= `[ ${name} ]`
+            let obj = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)
+            this.currentDataset=obj
+            document.querySelector(".box article p span").innerText= `[ ${obj["name"].replace(/[\ ]/ig,"")} ]`
         })})
     }
     listenerInfoBoxClose(){
@@ -58,26 +80,33 @@ class Controller{
             document.querySelector(".box").classList.add("box_close")
         })
         document.querySelector("#true").addEventListener("click",e=>{
-            document.querySelector("#false").disabled=true
-            document.querySelector("#true").disabled=true
-            e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="green"
-            e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Removido"
-            let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
-            e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:20%;margin:auto;'/>"
-            e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
-            
+            this.deleteStorage(this.currentDataset)
+            .then(res=>{
+                document.querySelector("#false").disabled=true
+                document.querySelector("#true").disabled=true
+                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="green"
+                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Removido"
+                let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
+                e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:20%;margin:auto;'/>"
+                e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
+                
 
-           setTimeout(()=>{
-            document.querySelector(".box").classList.remove("box_open")
-            document.querySelector(".box").classList.add("box_close")
-            document.querySelector("#false").disabled=false
-            document.querySelector("#true").disabled=false
-            setTimeout(()=>{
-                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
-                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
-                e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML=p
-            },1000)
-           },5000)
+            
+                setTimeout(()=>{
+                    document.querySelector(".box").classList.remove("box_open")
+                    document.querySelector(".box").classList.add("box_close")
+                    document.querySelector("#false").disabled=false
+                    document.querySelector("#true").disabled=false
+                    setTimeout(()=>{
+                        e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
+                        e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
+                        e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML=p
+                        this.currentDataset=""
+                    },1000)
+                },3000)
+            })
+            .catch(err=>console.log(err))
+       
         })
     }
     listenerClose(){
@@ -112,7 +141,7 @@ class Controller{
        if(data.target.dataset.key){
             let obj = JSON.parse(data.target.dataset.key)
             this.video.src=obj.urlFile
-            this.video.parentNode.querySelector("marquee").innerHTML=obj.nameFile
+            this.video.parentNode.querySelector("marquee").innerHTML=obj.name
             return true
         }else{return false}
     }
@@ -148,6 +177,7 @@ class Controller{
                 document.querySelector("progress").hidden=true
                 ress.forEach(resp=>{
                     this.getFireBaseRef("files").push().set({
+                        name:resp.name,
                         nameFile:resp.name,
                         type:resp.type,
                         contentType:resp.contentType,
@@ -176,8 +206,10 @@ class Controller{
                 el.innerHTML=`<figure></figure>`
                 el.querySelector("figure").innerHTML+=`<div class="info_box">X</div>`
                 let img = this.createEl(el.querySelector("figure"),"img","src","img/video-icon-black.png")
-                img.dataset.key=JSON.stringify(snapshotItem.val())
-                el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().nameFile}</figcaption>`
+                let obj = snapshotItem.val()
+                obj["key"]=snapshotItem.key
+                img.dataset.key=JSON.stringify(obj)
+                el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().name}</figcaption>`
             })
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()
@@ -203,6 +235,8 @@ class Controller{
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
     }
+    get currentDataset(){return this._currentDataset}
+    set currentDataset(value){this._currentDataset=value}
     get modalVideo(){return this._modalVideo}
     set modalVideo(value){this._modalVideo=value}
     get playList(){return this._playList}

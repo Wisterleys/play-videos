@@ -43,16 +43,13 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
     margin: 0;
     text-align: center;
     width: 100%;
-    background: radial-gradient(rgba(0,0,0,.5),rgba(92, 62, 62, 0.5));
+    background: radial-gradient(rgba(255, 255, 255, 0.5),rgba(92, 62, 62, 0.5));
 }
 #playList li figure img{
     width: 50%;
     cursor: pointer;
 }
-#playList li figure img:hover{
-    background: url("https://cdn3.iconfinder.com/data/icons/iconic-1/32/play_alt-512.png");
-    
-}
+
 figcaption{
     padding: 0;
     margin: 0;
@@ -60,6 +57,7 @@ figcaption{
     height: 20px;
     display: flex;
     overflow:hidden;
+    cursor: pointer;
     transition:background .5s, height .5s;
 }
 figcaption:hover{
@@ -104,6 +102,11 @@ figcaption:hover{
     background: rgb(240, 234, 226);
     border-radius: 11.25px;
     display: none;
+}
+.box span{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    font-weight: bolder;
 }
 #false{
     background: rgb(30, 121, 37);

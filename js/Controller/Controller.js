@@ -28,7 +28,7 @@ class Controller{
             document.querySelector(".box_close")? document.querySelector(".box").classList.remove("box_close"):0
             document.querySelector(".box").classList.add("box_open")
             let name = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)["nameFile"].replace(/[\ ]/ig,"")
-            document.querySelector(".box article p span").innerText= name
+            document.querySelector(".box article p span").innerText= `[ ${name} ]`
         })})
     }
     listenerInfoBoxClose(){
@@ -42,7 +42,7 @@ class Controller{
             e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="green"
             e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Removido"
             let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
-            e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:50%;margin:auto;'/>"
+            e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:20%;margin:auto;'/>"
             e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
             
 

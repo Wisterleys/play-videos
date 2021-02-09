@@ -23,6 +23,27 @@ class Controller{
             })
         });
     }
+    updateFirebase(){
+        
+    }
+    listenerFigcaption(){
+        document.querySelectorAll("figcaption").forEach(el=>{
+            el.addEventListener("dblclick",e=>{
+                e.target.style.height="200px"
+                e.target.contentEditable=true
+                e.target.addEventListener("blur",e=>{
+                    e.target.style.height=""
+                    e.target.contentEditable=false
+                })
+                e.target.addEventListener("keyup",e=>{
+                    if(e.key=="Enter"){
+                        e.target.style.height=""
+                        e.target.contentEditable=false
+                    }
+                })
+            })
+        })
+    }
     listenerInfoBox(){
         document.querySelectorAll(".info_box").forEach(el=>{el.addEventListener("click",e=>{
             document.querySelector(".box_close")? document.querySelector(".box").classList.remove("box_close"):0
@@ -161,6 +182,7 @@ class Controller{
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()
             this.listenerInfoBox()
+            this.listenerFigcaption()
         })
     }
    

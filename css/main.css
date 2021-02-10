@@ -22,6 +22,19 @@ main footer article aside #git img{width: 20%;margin:0;padding:0;}
 main footer article aside #face{width:50%;float: right;margin:0;padding:0;}
 main footer article aside #face img{width: 25%;margin:0;padding:0;}
 
+#progress{
+    width: 100%;
+    height: 20px;
+    border:2px solid black;
+    background-color: rgb(117, 113, 108);
+}
+#progress div{
+    width: 50%;
+    height: 20px;
+    background: linear-gradient(90deg,rgb(65, 21, 141),rgb(255,255,255),rgb(65, 21, 141));
+    background-size: 400% 400%;
+    animation: progres 1s infinite;
+}
 
 #playList{
     width: 95%;

@@ -71,7 +71,7 @@ class Controller{
             document.querySelector(".box").classList.add("box_open")
             let obj = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)
             this.currentDataset=obj
-            document.querySelector(".box article p span").innerText= `[ ${obj["name"].replace(/[\ ]/ig,"")} ]`
+            document.querySelector(".box article p span").innerText= `[ ${obj["name"]} ]`
         })})
     }
     listenerInfoBoxClose(){
@@ -152,8 +152,8 @@ class Controller{
                 let fileRef = firebase.storage().ref("/files").child(file.name)
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
-                    document.querySelector("progress").hidden=false
-                    document.querySelector("progress").value=snapshot._delegate.bytesTransferred*100/snapshot._delegate.totalBytes
+                    document.querySelector("#progress").hidden=false
+                    document.querySelector("#progress div").style.width=`${snapshot._delegate.bytesTransferred*100/snapshot._delegate.totalBytes}%`
                 },erro=>{
                     reject(erro)
                 },()=>{
@@ -174,7 +174,7 @@ class Controller{
         this.file.addEventListener("change",e=>{
              this.updateTask(e.target.files)
              .then(ress=>{
-                document.querySelector("progress").hidden=true
+                document.querySelector("#progress").hidden=true
                 ress.forEach(resp=>{
                     this.getFireBaseRef("files").push().set({
                         name:resp.name,
@@ -195,7 +195,6 @@ class Controller{
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
     getFireBaseRef(reff="files"){
-        
         return firebase.database().ref(reff)
     }
     loadPlaylist(){

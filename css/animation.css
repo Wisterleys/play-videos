@@ -35,3 +35,13 @@
     from{transform:translate(45%,50%);}
     to{transform: translate(45%,-150%);}
 }
+
+/* upload progress */
+@keyframes progres{
+    to{
+        background-position: 0 50%;
+    }
+    from{
+        background-position: 100% 50%;
+    }
+}

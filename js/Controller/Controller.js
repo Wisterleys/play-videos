@@ -3,6 +3,7 @@ class Controller{
         this._video;
         this._file;
         this._currentDataset
+        this._currentTimeLoop;
         this._modalVideo=document.querySelector("#video")
         this._playList=document.querySelector("#playList")
         this.connectDatabase()
@@ -36,6 +37,7 @@ class Controller{
     }
     deleteFirebase(key){
          this.getFireBaseRef().child(key).remove()
+         localStorage.removeItem(key)
      }
     updateFirebase(json,name){
        if(name){
@@ -114,14 +116,29 @@ class Controller{
             this.modalMoveClose()
         })
     }
+    returnsPercent(value,total){
+        return value*100/total
+    }
+    saveAssistedDuration(){
+        let data = JSON.parse(this.video.dataset.key)
+        
+        this.currentTimeLoop = setInterval(() => {
+            localStorage.setItem(data.key,`{"currentTime":${this.video.currentTime},"d":${this.video.duration}}`)  
+        },500); 
+        
+    }
     modalMoveClose(){
         this.modalVideo.setAttribute("class","close")
+        clearInterval(this.currentTimeLoop)
         this.video.src=''
     }
     modalMoveOpen(el){
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
+            
+            this.video.currentTime= parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"])
             this.video.play()
+            this.saveAssistedDuration()
         }
        
     }
@@ -140,6 +157,7 @@ class Controller{
     getData(data){
        if(data.target.dataset.key){
             let obj = JSON.parse(data.target.dataset.key)
+            this.video.dataset.key=JSON.stringify(obj)
             this.video.src=obj.urlFile
             this.video.parentNode.querySelector("marquee").innerHTML=obj.name
             return true
@@ -153,7 +171,7 @@ class Controller{
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
                     document.querySelector("#progress").hidden=false
-                    document.querySelector("#progress div").style.width=`${snapshot._delegate.bytesTransferred*100/snapshot._delegate.totalBytes}%`
+                    document.querySelector("#progress div").style.width=`${this.returnsPercent(snapshot._delegate.bytesTransferred,snapshot._delegate.totalBytes)}%`
                 },erro=>{
                     reject(erro)
                 },()=>{
@@ -183,7 +201,8 @@ class Controller{
                         contentType:resp.contentType,
                         updated:resp.updated,
                         size:resp.size,
-                        currentTime:"",
+                        currentTime:0,
+                        duration:0,
                         urlFile:resp.customMetadata.downloadURL
                     })
                 })
@@ -208,7 +227,15 @@ class Controller{
                 let obj = snapshotItem.val()
                 obj["key"]=snapshotItem.key
                 img.dataset.key=JSON.stringify(obj)
-                el.querySelector("figure").innerHTML+=`<figcaption>${snapshotItem.val().name}</figcaption>`
+                el.querySelector("figure").innerHTML+=`
+                <div id="minProgress">
+                            <div></div>
+                </div>
+                <figcaption>${snapshotItem.val().name}</figcaption>
+                `
+                let info = JSON.parse(localStorage.getItem(snapshotItem.key))
+                el.querySelector("#minProgress div").style.width=`${this.returnsPercent(info.currentTime, info.d)}%`
+            //console.log(this.returnsPercent(info.currentTime,info.d))
             })
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()
@@ -234,6 +261,8 @@ class Controller{
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
     }
+    get currentTimeLoop(){return this._currentTimeLoop}
+    set currentTimeLoop(value){this._currentTimeLoop=value}
     get currentDataset(){return this._currentDataset}
     set currentDataset(value){this._currentDataset=value}
     get modalVideo(){return this._modalVideo}

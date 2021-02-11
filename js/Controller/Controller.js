@@ -235,7 +235,6 @@ class Controller{
                 `
                 let info = JSON.parse(localStorage.getItem(snapshotItem.key))
                 el.querySelector("#minProgress div").style.width=`${info?this.returnsPercent(info.currentTime, info.d):0}%`
-            //console.log(this.returnsPercent(info.currentTime,info.d))
             })
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()

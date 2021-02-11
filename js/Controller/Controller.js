@@ -122,7 +122,7 @@ class Controller{
     saveAssistedDuration(){
         let data = JSON.parse(this.video.dataset.key)
         this.currentTimeLoop = setInterval(() => {
-            JSON.parse(localStorage.getItem(data["key"]))["currentTime"]<this.video.currentTime?localStorage.setItem(data.key,`{"currentTime":${this.video.currentTime},"d":${this.video.duration}}`):0  
+            JSON.parse(localStorage.getItem(data["key"]))["currentTime"]<this.video.currentTime?localStorage.setItem(data.key,JSON.stringify({currentTime:this.video.currentTime,duration:this.video.duration})):0  
         },500); 
         
     }
@@ -226,6 +226,7 @@ class Controller{
                 let obj = snapshotItem.val()
                 obj["key"]=snapshotItem.key
                 img.dataset.key=JSON.stringify(obj)
+                localStorage.getItem(snapshotItem.key)?0:localStorage.setItem(snapshotItem.key,JSON.stringify({currentTime:obj.currentTime,duration:obj.duration}))
                 el.querySelector("figure").innerHTML+=`
                 <div id="minProgress">
                             <div></div>
@@ -233,7 +234,7 @@ class Controller{
                 <figcaption>${snapshotItem.val().name}</figcaption>
                 `
                 let info = JSON.parse(localStorage.getItem(snapshotItem.key))
-                el.querySelector("#minProgress div").style.width=`${info?this.returnsPercent(info.currentTime, info.d):0}%`
+                el.querySelector("#minProgress div").style.width=`${info?this.returnsPercent(info.currentTime,info.duration):0}%`
             })
             this.listenerList(this.playList.querySelectorAll("img"))
             this.listenerClose()

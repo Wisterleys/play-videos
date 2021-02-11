@@ -121,9 +121,8 @@ class Controller{
     }
     saveAssistedDuration(){
         let data = JSON.parse(this.video.dataset.key)
-        
         this.currentTimeLoop = setInterval(() => {
-            localStorage.setItem(data.key,`{"currentTime":${this.video.currentTime},"d":${this.video.duration}}`)  
+            JSON.parse(localStorage.getItem(data["key"]))["currentTime"]<this.video.currentTime?localStorage.setItem(data.key,`{"currentTime":${this.video.currentTime},"d":${this.video.duration}}`):0  
         },500); 
         
     }

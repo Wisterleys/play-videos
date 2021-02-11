@@ -136,7 +136,7 @@ class Controller{
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
             
-            this.video.currentTime= parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"])
+            this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
             this.video.play()
             this.saveAssistedDuration()
         }
@@ -234,7 +234,7 @@ class Controller{
                 <figcaption>${snapshotItem.val().name}</figcaption>
                 `
                 let info = JSON.parse(localStorage.getItem(snapshotItem.key))
-                el.querySelector("#minProgress div").style.width=`${this.returnsPercent(info.currentTime, info.d)}%`
+                el.querySelector("#minProgress div").style.width=`${info?this.returnsPercent(info.currentTime, info.d):0}%`
             //console.log(this.returnsPercent(info.currentTime,info.d))
             })
             this.listenerList(this.playList.querySelectorAll("img"))

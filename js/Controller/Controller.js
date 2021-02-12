@@ -107,7 +107,28 @@ class Controller{
                     },1000)
                 },3000)
             })
-            .catch(err=>console.log(err))
+            .catch(err=>{
+                let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
+                e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerHTML="Erro! <div id='fechar' style='width: 30px;float:right;background:green;border:2px solid white;cursor:pointer;border-radius:360px;padding:5px;position:fixed;left:85%;top:-30px'>X</div>"
+                e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML=`
+                <h3><b><u>${this.currentDataset.name}</u></b></h3><br>
+                Esse arquivo existe no database mas não existe no storage e por esse motivo não foi possível finalizar a operação. <br><br>
+                `
+                document.querySelector("#false").disabled=true
+                document.querySelector("#true").disabled=true
+                document.querySelector("#fechar").addEventListener("click",()=>{
+                    document.querySelector(".box").classList.remove("box_open")
+                    document.querySelector(".box").classList.add("box_close")
+                    document.querySelector("#false").disabled=false
+                    document.querySelector("#true").disabled=false
+                    setTimeout(()=>{
+                        e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
+                        e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
+                        e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML=p
+                        this.currentDataset=""
+                    },500)
+                })
+            })
        
         })
     }

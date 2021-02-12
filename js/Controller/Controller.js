@@ -1,17 +1,24 @@
 class Controller{
     constructor(el){
+        //Attributes
         this._video;
         this._file;
         this._currentDataset
         this._currentTimeLoop;
         this._modalVideo=document.querySelector("#video")
         this._playList=document.querySelector("#playList")
-        this.connectDatabase()
+        this.model = new Model()
+        //-----------------------------------------
+
+        //Calling methods
         this.toAssign(el)
         this.initializeEvents()
         this.loadPlaylist()
         this.listenerInfoBoxClose()
+        //------------------------------------
     }
+
+    //listening methods
     listenerList(element){
         element.forEach(el=>{
             el.addEventListener("mouseover",e=>{
@@ -25,26 +32,6 @@ class Controller{
             })
         });
     }
-    deleteStorage(json){
-        return new Promise((resolve,reject)=>{
-            firebase.storage().ref("/files").child(json.nameFile).delete()
-            .then(res=>{
-            this.deleteFirebase(json.key)
-                resolve(res)
-            })
-            .catch(erro=>{reject(erro)})
-            })
-    }
-    deleteFirebase(key){
-         this.getFireBaseRef().child(key).remove()
-         localStorage.removeItem(key)
-     }
-    updateFirebase(json,name){
-       if(name){
-        json.name=name
-        this.getFireBaseRef().child(json.key).set(json)
-       }
-    }
     listenerFigcaption(){
         document.querySelectorAll("figcaption").forEach(el=>{
             el.addEventListener("dblclick",e=>{
@@ -55,13 +42,13 @@ class Controller{
                 e.target.addEventListener("blur",e=>{
                     e.target.style.height=""
                     e.target.contentEditable=false
-                    e.target.innerText&&obj?this.updateFirebase(obj,e.target.innerText):e.target.innerText=name
+                    e.target.innerText&&obj?this.model.updateFirebase(obj,e.target.innerText):e.target.innerText=name
                 })
                 e.target.addEventListener("keyup",e=>{
                     if(e.key=="Enter"){
                         e.target.style.height=""
                         e.target.contentEditable=false
-                        e.target.innerText&&obj?this.updateFirebase(obj,e.target.innerText):e.target.innerText=name
+                        e.target.innerText&&obj?this.model.updateFirebase(obj,e.target.innerText):e.target.innerText=name
                     }
                 })
             })
@@ -82,7 +69,7 @@ class Controller{
             document.querySelector(".box").classList.add("box_close")
         })
         document.querySelector("#true").addEventListener("click",e=>{
-            this.deleteStorage(this.currentDataset)
+            this.model.deleteStorage(this.currentDataset)
             .then(res=>{
                 document.querySelector("#false").disabled=true
                 document.querySelector("#true").disabled=true
@@ -137,15 +124,17 @@ class Controller{
             this.modalMoveClose()
         })
     }
+    //------------------------------------------------------------------------
+
+    //Methods
     returnsPercent(value,total){
         return value*100/total
     }
     saveAssistedDuration(){
         let data = JSON.parse(this.video.dataset.key)
         this.currentTimeLoop = setInterval(() => {
-            JSON.parse(localStorage.getItem(data["key"]))["currentTime"]<this.video.currentTime?localStorage.setItem(data.key,JSON.stringify({currentTime:this.video.currentTime,duration:this.video.duration})):0  
-        },500); 
-        
+            this.model.getItem(data["key"])["currentTime"]<this.video.currentTime?this.model.setItem(data.key,{currentTime:this.video.currentTime,duration:this.video.duration}):0  
+        },500);  
     }
     modalMoveClose(){
         this.modalVideo.setAttribute("class","close")
@@ -155,7 +144,6 @@ class Controller{
     modalMoveOpen(el){
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
-            
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
             this.video.play()
             this.saveAssistedDuration()
@@ -183,38 +171,14 @@ class Controller{
             return true
         }else{return false}
     }
-    updateTask(files){
-        let promises=[];
-        [...files].forEach(file => {
-            promises.push(new Promise((resolve,reject)=>{
-                let fileRef = firebase.storage().ref("/files").child(file.name)
-                let task = fileRef.put(file)
-                task.on("state_changed",snapshot=>{
-                    document.querySelector("#progress").hidden=false
-                    document.querySelector("#progress div").style.width=`${this.returnsPercent(snapshot._delegate.bytesTransferred,snapshot._delegate.totalBytes)}%`
-                },erro=>{
-                    reject(erro)
-                },()=>{
-                    task.snapshot.ref.getDownloadURL().then(downloadURL=>{
-                        task.snapshot.ref.updateMetadata({ customMetadata: { downloadURL }}).then(metadata=>{
-                         resolve(metadata)
-                       }).catch( error => {
-                         console.error( 'Error update metadata:', error)
-                         reject( error ) 
-                       })
-                    })
-                })
-            }))
-        });
-        return Promise.all(promises)
-    }
+    
     initializeEvents(){
         this.file.addEventListener("change",e=>{
-             this.updateTask(e.target.files)
+             this.model.uploadTask(e.target.files)
              .then(ress=>{
                 document.querySelector("#progress").hidden=true
                 ress.forEach(resp=>{
-                    this.getFireBaseRef("files").push().set({
+                    this.model.getFireBaseRef("files").push().set({
                         name:resp.name,
                         nameFile:resp.name,
                         type:resp.type,
@@ -233,11 +197,9 @@ class Controller{
             
         document.querySelector("button").addEventListener("click",e=>{this.file.click()})
     }
-    getFireBaseRef(reff="files"){
-        return firebase.database().ref(reff)
-    }
+    
     loadPlaylist(){
-        this.getFireBaseRef().on("value",snapshot=>{
+        this.model.getFireBaseRef().on("value",snapshot=>{
             snapshot.val()?this.playList.innerHTML='':0
             snapshot.forEach(snapshotItem=>{
                 let el = this.createEl(this.playList,"li","class","list")
@@ -263,24 +225,9 @@ class Controller{
             this.listenerFigcaption()
         })
     }
-   
-    connectDatabase(){
-       // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-            var firebaseConfig = {
-                apiKey: "AIzaSyDEtpfo5eeBYub1fgCLKM_SMv4ZzmfBAgw",
-                authDomain: "play-9775f.firebaseapp.com",
-                databaseURL: "https://play-9775f-default-rtdb.firebaseio.com",
-                projectId: "play-9775f",
-                storageBucket: "play-9775f.appspot.com",
-                messagingSenderId: "833926432231",
-                appId: "1:833926432231:web:37f9b6a2962c8c79802942",
-                measurementId: "G-LDM79RVMSZ"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-    }
+    //----------------------------------------------------
+
+   // Methods SETs and GETs
     get currentTimeLoop(){return this._currentTimeLoop}
     set currentTimeLoop(value){this._currentTimeLoop=value}
     get currentDataset(){return this._currentDataset}
@@ -293,4 +240,5 @@ class Controller{
     set file(value){this._file=value}
     get video(){return this._video}
     set video(value){this._video=value}
+    //----------------------------------------------
 }

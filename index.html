@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/video-icon-red.png" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/animation.css">
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -81,9 +82,18 @@
                 <div class="x">X</div>
                 <!-- <iframe  src="https://www.youtube.com/embed/YP9nrR-ym3c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                 <video src="" controls data-key="null"></video>
-                <p>
-                   <marquee behavior="" direction="">no file...</marquee>
-                </p>
+                <div id="menu">
+                    <ul>
+                        <li id="menuPlay">
+                        </li>
+                        <li>Next</li>
+                        <li>Next</li>
+                        <li>Next</li>
+                        <li>Next</li>
+                        <li>Next</li>
+                    </ul>
+                    <marquee behavior="" direction="">no file...</marquee>
+                </div>
             </section>
             <input type="file" name="" id="file" hidden accept="video/*">
         </article>

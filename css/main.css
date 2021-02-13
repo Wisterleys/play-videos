@@ -179,7 +179,7 @@ figcaption:hover{
 .inactive{
     background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
     background-position: 20% 50%;
-    animation: icon_close 1s;
+    animation: icon_close .1s;
 }
 @keyframes icon_close{
     from{
@@ -194,7 +194,7 @@ figcaption:hover{
 .active{
     background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
     background-position: 80% 50%;
-    animation: play 1s;
+    animation: play .1s;
 }
 @keyframes play{
     from{

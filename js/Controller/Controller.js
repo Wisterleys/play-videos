@@ -15,6 +15,7 @@ class Controller{
         this.initializeEvents()
         this.loadPlaylist()
         this.listenerInfoBoxClose()
+        this.listeningPlayButton()
         //------------------------------------
     }
 
@@ -121,6 +122,12 @@ class Controller{
             this.modalMoveClose()
         })
     }
+    listeningPlayButton(){
+        document.querySelector("#menuPlay").addEventListener("click",e=>{
+            let el = document.querySelector("#menuPlay")
+            this.exchangeInternalElements(el.classList.value,el)
+        })
+    }
     //------------------------------------------------------------------------
 
     //Methods
@@ -224,7 +231,16 @@ class Controller{
     }
     //----------------------------------------------------
     //PLAY CONTROLS
-    
+    toggle(vet){// need to pass three values index 0 1 2
+        console.log(vet[1]==vet[0]?vet[2]:vet[1])
+        return vet[1]==vet[0]?vet[2]:vet[1]
+    }
+    exchangeInternalElements(classe,el){
+        let ell = el.innerHTML
+        el.classList.remove(classe)
+        el.classList.add(this.toggle([classe,"inactive","active"]))
+        el.innerHTML=this.toggle([ell,`<div id="pl"></div><div id="pr"></div>`,`<div id="t"></div>`])
+    }
     //------------------------
 
    // Methods SETs and GETs

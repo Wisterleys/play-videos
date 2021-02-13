@@ -78,9 +78,6 @@ class Controller{
                 let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
                 e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:20%;margin:auto;'/>"
                 e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
-                
-
-            
                 setTimeout(()=>{
                     document.querySelector(".box").classList.remove("box_open")
                     document.querySelector(".box").classList.add("box_close")
@@ -226,6 +223,9 @@ class Controller{
         })
     }
     //----------------------------------------------------
+    //PLAY CONTROLS
+    
+    //------------------------
 
    // Methods SETs and GETs
     get currentTimeLoop(){return this._currentTimeLoop}

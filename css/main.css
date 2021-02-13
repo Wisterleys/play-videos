@@ -9,7 +9,6 @@ main article #video{position:fixed;top:0px;width: 80%;height:60%;background-colo
 main article #video video,iframe{width: 100%;height:100%;}
 main article #video video{width: 100%;padding: 0;margin: 0;}
 main article #video marquee{width: 100%;padding: 0;margin: 0;}
-main article #video progress{width: 100%;padding: 0;margin: 0;}
 main footer {width: 100%;float: left;clear: both;color: white;font-family: monospace;}
 main footer header{width: 100%;padding: 0;margin: 0;}
 main footer article{width: 100%;}
@@ -26,6 +25,7 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
     height: 20px;
     border:2px solid black;
     border-radius: 180px;
+    overflow: hidden;
     background-color: rgb(117, 113, 108);
 }
 #progress div{
@@ -146,24 +146,93 @@ figcaption:hover{
 #menu{
     margin:0;
     padding:0;
-    transform: translateY(-110%);
+    transform: translateY(-103%);
     background:rgba(121, 30, 30, 0.363)
 }
 #menu ul{
     padding: 0;
     margin:0;
     list-style: none;
-    display: flex;
+    -webkit-touch-callout: none;  /* iPhone OS, Safari */
+    -webkit-user-select: none;    /* Chrome, Safari 3 */
+    -khtml-user-select: none;     /* Safari 2 */
+    -moz-user-select: none;       /* Firefox */
+    -ms-user-select: none;        /* IE10+ */
+    user-select: none; 
 }
 #menu ul li{
-    margin-left: 10px;
+    display: inline-block;
+    margin-left: 5px;
 }
 #menuPlay{
-    width: 50px;
-    height: 50px;
-    background: url("../img/video-icon-red.png")center center;
-    background-size: cover;
+    width: 80px;
+    height: 80px;
+    border-style: outset;
+    border-color: rgba(216, 191, 216, 0.466);
+    border-radius: 360px;
+    transform: translateY(-10%);
+    background-size: 400% 400%;
 }
+#menuPlay:active{
+    border-style: inset;
+}
+.inactive{
+    background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
+    background-position: 20% 50%;
+    animation: icon_close 1s;
+}
+@keyframes icon_close{
+    from{
+        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
+        background-position: 80% 50%;
+    }
+    to{
+        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
+        background-position: 20% 50%;
+    }
+}
+.active{
+    background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
+    background-position: 80% 50%;
+    animation: play 1s;
+}
+@keyframes play{
+    from{
+        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
+        background-position: 20% 50%;
+    }
+    to{
+        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
+        background-position: 80% 50%;
+    }
+}
+#menuPlay div#t{
+    width: 0px; 
+    height: 0px; 
+    border-top: 35px solid transparent;
+    border-bottom: 35px solid transparent;
+    border-left: 35px solid #111111;
+    margin: 5px auto;
+}
+#pl{
+    float: left;
+    width: 20px;
+    height: 40px;
+    margin: 0;
+    border-radius: 10px 0px;
+    transform: translate(70%,50%);
+    background: black;
+}
+#pr{
+    float:right;
+    width: 20px;
+    height: 40px;
+    margin: 0;
+    border-radius: 10px 0px;
+    background: black;
+    transform: translate(-70%,50%);
+}
+
 .box article{width: 95%; padding: 2px;}
 .box header{background-color: rgb(189, 32, 32);width: 100%;margin:0px;}
 .box header h1{text-align: center;float: none;}

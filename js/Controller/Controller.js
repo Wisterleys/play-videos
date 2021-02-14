@@ -8,6 +8,7 @@ class Controller{
         this._modalVideo=document.querySelector("#video")
         this._playList=document.querySelector("#playList")
         this.model = new Model()
+        this.promise=true
         //-----------------------------------------
 
         //Calling methods
@@ -124,8 +125,10 @@ class Controller{
     }
     listeningPlayButton(){
         document.querySelector("#menuPlay").addEventListener("click",e=>{
-            let el = document.querySelector("#menuPlay")
-            this.exchangeInternalElements(el.classList.value,el)
+            if(this.promise){
+                let el = document.querySelector("#menuPlay")
+                this.exchangeInternalElements(el.classList.value,el)
+            }
         })
     }
     //------------------------------------------------------------------------
@@ -143,13 +146,13 @@ class Controller{
     modalMoveClose(){
         this.modalVideo.setAttribute("class","close")
         clearInterval(this.currentTimeLoop)
-        this.video.src=''
+        this.video.pause()
     }
     modalMoveOpen(el){
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
-            this.video.play()
+            if(this.promise){this.promise=false;this.video.play().then(res=>this.promise=true)}
             this.saveAssistedDuration()
         }
        

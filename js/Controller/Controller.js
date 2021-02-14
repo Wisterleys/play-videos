@@ -124,11 +124,14 @@ class Controller{
         })
     }
     listeningPlayButton(){
+        let el = document.querySelector("#menuPlay")
         document.querySelector("#menuPlay").addEventListener("click",e=>{
             if(this.promise){
-                let el = document.querySelector("#menuPlay")
                 this.exchangeInternalElements(el.classList.value,el)
             }
+        })
+        window.addEventListener("keyup",e=>{
+            e.code=="Space"?this.exchangeInternalElements(el.classList.value,el):0
         })
     }
     //------------------------------------------------------------------------
@@ -146,13 +149,13 @@ class Controller{
     modalMoveClose(){
         this.modalVideo.setAttribute("class","close")
         clearInterval(this.currentTimeLoop)
-        this.video.pause()
+        this.video.src=""
     }
     modalMoveOpen(el){
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
-            if(this.promise){this.promise=false;this.video.play().then(res=>this.promise=true)}
+            if(this.promise){this.exchangeInternalElements(document.querySelector("#menuPlay").classList.value,document.querySelector("#menuPlay"))}
             this.saveAssistedDuration()
         }
        
@@ -235,14 +238,18 @@ class Controller{
     //----------------------------------------------------
     //PLAY CONTROLS
     toggle(vet){// need to pass three values index 0 1 2
-        console.log(vet[1]==vet[0]?vet[2]:vet[1])
         return vet[1]==vet[0]?vet[2]:vet[1]
     }
     exchangeInternalElements(classe,el){
-        let ell = el.innerHTML
-        el.classList.remove(classe)
-        el.classList.add(this.toggle([classe,"inactive","active"]))
-        el.innerHTML=this.toggle([ell,`<div id="pl"></div><div id="pr"></div>`,`<div id="t"></div>`])
+        if(this.promise){
+            this.promise=false
+            let ell = el.innerHTML
+            el.classList.remove(classe)
+            el.classList.add(this.toggle([classe,"inactive","active"]))
+            el.innerHTML=this.toggle([ell,`<div id="pl"></div><div id="pr"></div>`,`<div id="t"></div>`])
+            if(el.innerHTML==`<div id="pl"></div><div id="pr"></div>`){this.video.play();this.promise=true}
+            else {this.video.pause();this.promise=true}
+        }
     }
     //------------------------
 

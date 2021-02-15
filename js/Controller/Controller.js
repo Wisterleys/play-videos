@@ -138,19 +138,23 @@ class Controller{
     }
     
     listeningToTheVideoTime(){//video time progress bar
-        let controller = true
         this.video.addEventListener("timeupdate",e=>{
             if(this.video.src){
                 document.querySelector("#minProgressVideo div").style.width=`${this.returnsPercent(e.target.currentTime,e.target.duration)}%`
                 document.querySelector("#duration").innerText=`${this.formatsDate(this.video.currentTime)} / ${this.formatsDate(e.target.duration)}`
-                if(controller&&!isNaN(this.video.duration)){
-                    this.videoGalleryGenerator()
-                    controller=false;
-                }
             }
         })
     }
     listenGallery(){
+        this.video.onplaying=e=>{
+            document.querySelector("#gallery").style.visibility="visible"
+            this.videoGalleryGenerator()
+            .then(res=>{
+                this.selectCurrentScene(document.querySelector("#modal_gallery"))
+                console.log(res)
+            })
+            .catch(err=>{console.log(err)})
+        }
         document.querySelector("#gallery").addEventListener("click",e=>{
             let g = document.querySelector("#modal_gallery")
             g.hidden?g.hidden=false:g.hidden=true
@@ -165,18 +169,39 @@ class Controller{
     //------------------------------------------------------------------------
 
     //Methods
+    convertToNumbers(string){//convert time string to numbers
+        let time = string.split(":")
+        return [parseInt(time[0]),parseInt(time[1]),parseInt(time[2])];
+    }
+    compareArray(array,array_two){// this method only accepts an array that has 3 index. It is linked directly to meet the needs of the selectCurrentScene () method
+        return array[0]==array_two[0]&&array[1]==array_two[1]&&array_two[2]>=array[2]&&array_two[2]<array[2]+10
+    }
+    selectCurrentScene(el){
+        el.querySelectorAll("li").forEach(e=>{
+            let time = this.convertToNumbers(e.querySelector("p").innerText)
+            let video = this.convertToNumbers(this.formatsDate(this.video.currentTime))
+            this.compareArray(time,video)?e.querySelector("img").style.background="green":e.querySelector("img").style.background="none"
+            el.scrollTo(500, 0)
+        })
+    }
     videoGalleryGenerator(){
-        let obj = this.video
-        document.querySelector("#modal_gallery ul").innerHTML=""
-        let duration = obj.duration
-        for(let l=0;l<duration;l+=10){
-            let el = this.createEl(document.querySelector("#modal_gallery ul"),"li","class","listC")
-            el.innerHTML=`<img src="img/video-icon-red.png">`
-            el.innerHTML+=`<p>${this.formatsDate(l)}</p>`
-            el.addEventListener("click",e=>{
-                this.video.currentTime=l
-            })
-        }
+        return new Promise((resolve,reject)=>{
+            let obj = this.video
+            if(obj.src){
+                document.querySelector("#modal_gallery ul").innerHTML=""
+                let duration = obj.duration
+                for(let l=0;l<duration;l+=10){
+                    let el = this.createEl(document.querySelector("#modal_gallery ul"),"li","class","listC")
+                    el.innerHTML=`<img src="img/video-icon-red.png">`
+                    el.innerHTML+=`<p>${this.formatsDate(l)}</p>`
+                    el.addEventListener("click",e=>{
+                        this.video.currentTime=l
+                    })
+                }
+                resolve({info:"ok"})
+            }else reject({err:"src do vídeo vazia"})
+          
+        })
     }
     formatsDate(duration){
         let s = isNaN(duration)?0:parseInt(((duration)%60))
@@ -197,6 +222,8 @@ class Controller{
         this.modalVideo.setAttribute("class","close")
         clearInterval(this.currentTimeLoop)
         this.video.src=""
+        document.querySelector("#modal_gallery").hidden=true
+        document.querySelector("#gallery").style.visibility="hidden"
     }
     modalMoveOpen(el){
         if(this.getData(el)){

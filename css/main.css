@@ -20,6 +20,7 @@ main footer article aside #git img{width: 20%;margin:0;padding:0;}
 main footer article aside #face{width:50%;float: right;margin:0;padding:0;}
 main footer article aside #face img{width: 25%;margin:0;padding:0;}
 
+
 #progress{
     width: 100%;
     height: 20px;
@@ -49,7 +50,62 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
     border-radius: 180px;
     background: linear-gradient(rgb(173, 5, 5),rgb(255,255,255),rgb(173, 5, 5));
 }
-
+#minProgressVideo{
+    width: 98%;
+    height: 5px;
+    margin:auto;
+    border:2px solid black;
+    border-radius: 180px;
+    background-color: rgb(117, 113, 108);
+}
+#minProgressVideo div{
+    width: 0%;
+    height: 5px;
+    border-radius: 180px;
+    background: linear-gradient(rgb(173, 5, 5),rgb(255,255,255),rgb(173, 5, 5));
+}
+#duration{
+    width: 150px;
+    height: 15px;
+    text-align: center;
+}
+#modal_gallery{
+    position: fixed;
+    width: 100%;
+    height: 50%;
+    transform: translateY(20%);
+    overflow-x: auto;
+    z-index: 1;
+}
+#modal_gallery ul{
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+#modal_gallery li{
+    list-style: none;
+    width: 200px;
+    height: 150px;
+    transform: translateY(10%);
+    margin-left: 5px;
+}
+#modal_gallery img{
+    width: 100px;padding: 0;margin: 0;
+}
+#modal_gallery p{
+    margin: 100px;
+    margin:0;
+    padding: 0;
+    transform: translate(20%,-100%);
+}
+#gallery{
+    transform: translate(-50%,50%);
+    float: right;
+    width: 50px;
+    background: radial-gradient(ellipse farthest-corner at 45px 45px , #ffffff 0%, rgba(255, 4, 4, 0) 50%, #34344b 95%);
+    border-radius: 360px;
+    cursor: pointer;
+}
 #playList{
     width: 95%;
     padding: 0;
@@ -147,7 +203,7 @@ figcaption:hover{
     margin:0;
     padding:0;
     transform: translateY(-103%);
-    background:rgba(121, 30, 30, 0.363)
+    background:rgba(0, 0, 0, 0.363)
 }
 #menu ul{
     padding: 0;

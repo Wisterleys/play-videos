@@ -78,20 +78,37 @@
                     </figure>
                  </li>
             </ul>
-            <section id="video" class="fixed opeen">
+            <section id="video" class="fixed">
                 <div class="x">X</div>
                 <!-- <iframe  src="https://www.youtube.com/embed/YP9nrR-ym3c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
-                <video src="" controls data-key="null"></video>
+                <div id="modal_gallery" hidden>
+                    <ul>
+                        <li>
+                            <img src="img/video-icon-red.png">
+                        </li>
+                        <li>
+                            <img src="img/video-icon-red.png">
+                        </li>
+                        <li>
+                            <img src="img/video-icon-red.png">
+                        </li>
+                    </ul>
+                </div>
+                <video src=""  data-key="null" id="mainV"></video>
                 <div id="menu">
                     <ul>
                         <li id="menuPlay" class="inactive">
                             <div id="t"></div>
                         </li>
-                        <li>volta 10</li>
-                        <li>pula 10</li>
-                        <li>mudo volume</li>
-                        <li>maximizar</li>
+                        <li id="gallery"><img src="img/gallery-video.png" alt="Cenas" width="100%"></li>
+                        <li><input type="range" name="" style="width: 80px;" id=""></li>
+                        <li id="screen">[ ]</li>
+
                     </ul>
+                    <div id="minProgressVideo">
+                        <div></div>
+                    </div>
+                    <div id="duration"></div>
                     <marquee behavior="" direction="">no file...</marquee>
                 </div>
             </section>

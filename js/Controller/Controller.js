@@ -14,9 +14,6 @@ class Controller{
         //Calling methods
         this.toAssign(el)
         this.initializeEvents()
-        this.loadPlaylist()
-        this.listenerInfoBoxClose()
-        this.listeningPlayButton()
         //------------------------------------
     }
 
@@ -134,9 +131,59 @@ class Controller{
             e.code=="Space"?this.exchangeInternalElements(el.classList.value,el):0
         })
     }
+    listenerVolume(){
+        document.querySelector("input[type='range']").addEventListener("change",e=>{
+            this.video.volume=e.target.value*1.0/100
+        })
+    }
+    
+    listeningToTheVideoTime(){//video time progress bar
+        let controller = true
+        this.video.addEventListener("timeupdate",e=>{
+            if(this.video.src){
+                document.querySelector("#minProgressVideo div").style.width=`${this.returnsPercent(e.target.currentTime,e.target.duration)}%`
+                document.querySelector("#duration").innerText=`${this.formatsDate(this.video.currentTime)} / ${this.formatsDate(e.target.duration)}`
+                if(controller&&!isNaN(this.video.duration)){
+                    this.videoGalleryGenerator()
+                    controller=false;
+                }
+            }
+        })
+    }
+    listenGallery(){
+        document.querySelector("#gallery").addEventListener("click",e=>{
+            let g = document.querySelector("#modal_gallery")
+            g.hidden?g.hidden=false:g.hidden=true
+        })
+    }
+    listenerScreen(){
+        document.querySelector("#screen").style.cursor="pointer"
+        document.querySelector("#screen").addEventListener("click",e=>{
+            this.video.requestFullscreen().then(res=>console.log(res))
+        })
+    }
     //------------------------------------------------------------------------
 
     //Methods
+    videoGalleryGenerator(){
+        let obj = this.video
+        document.querySelector("#modal_gallery ul").innerHTML=""
+        let duration = obj.duration
+        for(let l=0;l<duration;l+=10){
+            let el = this.createEl(document.querySelector("#modal_gallery ul"),"li","class","listC")
+            el.innerHTML=`<img src="img/video-icon-red.png">`
+            el.innerHTML+=`<p>${this.formatsDate(l)}</p>`
+            el.addEventListener("click",e=>{
+                this.video.currentTime=l
+            })
+        }
+    }
+    formatsDate(duration){
+        let s = isNaN(duration)?0:parseInt(((duration)%60))
+        let m = isNaN(duration)?0:parseInt(((duration/60)%60))
+        let h = isNaN(duration)?0:parseInt(((duration/60/60)%24))
+        return `${h<10?"0"+h:h}:${m<10?"0"+m:m}:${s<10?"0"+s:s}`
+    }
     returnsPercent(value,total){
         return value*100/total
     }
@@ -157,6 +204,7 @@ class Controller{
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
             if(this.promise){this.exchangeInternalElements(document.querySelector("#menuPlay").classList.value,document.querySelector("#menuPlay"))}
             this.saveAssistedDuration()
+            
         }
        
     }
@@ -183,6 +231,13 @@ class Controller{
     }
     
     initializeEvents(){
+        this.loadPlaylist()
+        this.listenerInfoBoxClose()
+        this.listeningPlayButton()
+        this.listenerVolume()
+        this.listeningToTheVideoTime()
+        this.listenGallery()
+        this.listenerScreen()
         this.file.addEventListener("change",e=>{
              this.model.uploadTask(e.target.files)
              .then(ress=>{

@@ -1,5 +1,5 @@
 const CONFIG ={
-    video:document.querySelector("video"),
+    video:document.querySelector("#mainV"),
     file:document.querySelector("#file")
       
 }

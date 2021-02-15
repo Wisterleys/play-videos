@@ -62,7 +62,7 @@ class Model{
     connectDatabase(){
         // Your web app's Firebase configuration
          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-             var firebaseConfig = {
+            /*  var firebaseConfig = {
                  apiKey: "AIzaSyDEtpfo5eeBYub1fgCLKM_SMv4ZzmfBAgw",
                  authDomain: "play-9775f.firebaseapp.com",
                  databaseURL: "https://play-9775f-default-rtdb.firebaseio.com",
@@ -71,7 +71,16 @@ class Model{
                  messagingSenderId: "833926432231",
                  appId: "1:833926432231:web:37f9b6a2962c8c79802942",
                  measurementId: "G-LDM79RVMSZ"
-             };
+             }; */
+             var firebaseConfig = {
+                apiKey: "AIzaSyAJ9zmuqV5EFJ9f8HY0eQy7mnX870c0iNg",
+                authDomain: "playextra-27f40.firebaseapp.com",
+                projectId: "playextra-27f40",
+                storageBucket: "playextra-27f40.appspot.com",
+                messagingSenderId: "637998280658",
+                appId: "1:637998280658:web:5c666fe4b3138ba1a5620b",
+                measurementId: "G-Z2GHFR8880"
+              };
              // Initialize Firebase
              firebase.initializeApp(firebaseConfig);
              firebase.analytics();

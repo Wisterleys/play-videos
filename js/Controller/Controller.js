@@ -152,7 +152,7 @@ class Controller{
             this.videoGalleryGenerator()
             .then(res=>{
                 this.selectCurrentScene(S.s("#modal_gallery"))
-                console.log(res)
+                console.log(res.info)
             })
             .catch(err=>{console.log(err)})
         }
@@ -178,12 +178,12 @@ class Controller{
         return array[0]==array_two[0]&&array[1]==array_two[1]&&array_two[2]>=array[2]&&array_two[2]<array[2]+10
     }
     selectCurrentScene(el){
-        el.querySelectorAll("li").forEach(e=>{
+        el.querySelectorAll("li").forEach((e,i)=>{
             let time = this.convertToNumbers(e.querySelector("p").innerText)
             let video = this.convertToNumbers(this.formatsDate(this.video.currentTime))
             this.compareArray(time,video)?e.querySelector("img").style.background="green":e.querySelector("img").style.background="none"
-            console.log(e.offsetWidth)
-            //el.scrollTo(500, 0)
+            this.compareArray(time,video)?el.scrollTo(i*100, 0):0
+  
         })
     }
     videoGalleryGenerator(){

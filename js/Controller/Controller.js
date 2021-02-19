@@ -5,8 +5,8 @@ class Controller{
         this._file;
         this._currentDataset
         this._currentTimeLoop;
-        this._modalVideo=document.querySelector("#video")
-        this._playList=document.querySelector("#playList")
+        this._modalVideo=S.s("#video")
+        this._playList=S.s("#playList")
         this.model = new Model()
         this.promise=true
         //-----------------------------------------
@@ -32,7 +32,7 @@ class Controller{
         });
     }
     listenerFigcaption(){
-        document.querySelectorAll("figcaption").forEach(el=>{
+        S.sAll("figcaption").forEach(el=>{
             el.addEventListener("dblclick",e=>{
                 let obj=e.target.parentNode.querySelector("img").dataset.key?JSON.parse(e.target.parentNode.querySelector("img").dataset.key):""
                 let name = e.target.innerText
@@ -54,34 +54,34 @@ class Controller{
         })
     }
     listenerInfoBox(){
-        document.querySelectorAll(".info_box").forEach(el=>{el.addEventListener("click",e=>{
-            document.querySelector(".box_close")? document.querySelector(".box").classList.remove("box_close"):0
-            document.querySelector(".box").classList.add("box_open")
+        S.sAll(".info_box").forEach(el=>{el.addEventListener("click",e=>{
+            S.s(".box_close")? S.s(".box").classList.remove("box_close"):0
+            S.s(".box").classList.add("box_open")
             let obj = JSON.parse(e.target.parentNode.querySelector("img").dataset.key)
             this.currentDataset=obj
-            document.querySelector(".box article p span").innerText= `[ ${obj["name"]} ]`
+            S.s(".box article p span").innerText= `[ ${obj["name"]} ]`
         })})
     }
     listenerInfoBoxClose(){
-        document.querySelector("#false").addEventListener("click",e=>{
-            document.querySelector(".box").classList.remove("box_open")
-            document.querySelector(".box").classList.add("box_close")
+        S.s("#false").addEventListener("click",e=>{
+            S.s(".box").classList.remove("box_open")
+            S.s(".box").classList.add("box_close")
         })
-        document.querySelector("#true").addEventListener("click",e=>{
+        S.s("#true").addEventListener("click",e=>{
             this.model.deleteStorage(this.currentDataset)
             .then(res=>{
-                document.querySelector("#false").disabled=true
-                document.querySelector("#true").disabled=true
+                S.s("#false").disabled=true
+                S.s("#true").disabled=true
                 e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="green"
                 e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Removido"
                 let p = e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML
                 e.target.parentNode.parentNode.parentNode.querySelector("p").innerHTML="Arquivo Removido com sucesso! <br><img src='img/Green_check.png' style='width:20%;margin:auto;'/>"
                 e.target.parentNode.parentNode.parentNode.querySelector("p").style.textAlign="center"
                 setTimeout(()=>{
-                    document.querySelector(".box").classList.remove("box_open")
-                    document.querySelector(".box").classList.add("box_close")
-                    document.querySelector("#false").disabled=false
-                    document.querySelector("#true").disabled=false
+                    S.s(".box").classList.remove("box_open")
+                    S.s(".box").classList.add("box_close")
+                    S.s("#false").disabled=false
+                    S.s("#true").disabled=false
                     setTimeout(()=>{
                         e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
                         e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
@@ -97,13 +97,13 @@ class Controller{
                 <h3><b><u>${this.currentDataset.name}</u></b></h3><br>
                 Esse arquivo existe no database mas não existe no storage e por esse motivo não foi possível finalizar a operação. <br><br>
                 `
-                document.querySelector("#false").disabled=true
-                document.querySelector("#true").disabled=true
-                document.querySelector("#fechar").addEventListener("click",()=>{
-                    document.querySelector(".box").classList.remove("box_open")
-                    document.querySelector(".box").classList.add("box_close")
-                    document.querySelector("#false").disabled=false
-                    document.querySelector("#true").disabled=false
+                S.s("#false").disabled=true
+                S.s("#true").disabled=true
+                S.s("#fechar").addEventListener("click",()=>{
+                    S.s(".box").classList.remove("box_open")
+                    S.s(".box").classList.add("box_close")
+                    S.s("#false").disabled=false
+                    S.s("#true").disabled=false
                     setTimeout(()=>{
                         e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header").style.background="rgb(189, 32, 32)"
                         e.target.parentNode.parentNode.parentNode.parentNode.querySelector("header h1").innerText="Cuidado!"
@@ -121,8 +121,8 @@ class Controller{
         })
     }
     listeningPlayButton(){
-        let el = document.querySelector("#menuPlay")
-        document.querySelector("#menuPlay").addEventListener("click",e=>{
+        let el = S.s("#menuPlay")
+        S.s("#menuPlay").addEventListener("click",e=>{
             if(this.promise){
                 this.exchangeInternalElements(el.classList.value,el)
             }
@@ -132,7 +132,7 @@ class Controller{
         })
     }
     listenerVolume(){
-        document.querySelector("input[type='range']").addEventListener("change",e=>{
+        S.s("input[type='range']").addEventListener("change",e=>{
             this.video.volume=e.target.value*1.0/100
         })
     }
@@ -140,29 +140,30 @@ class Controller{
     listeningToTheVideoTime(){//video time progress bar
         this.video.addEventListener("timeupdate",e=>{
             if(this.video.src){
-                document.querySelector("#minProgressVideo div").style.width=`${this.returnsPercent(e.target.currentTime,e.target.duration)}%`
-                document.querySelector("#duration").innerText=`${this.formatsDate(this.video.currentTime)} / ${this.formatsDate(e.target.duration)}`
+                S.s("#minProgressVideo div").style.width=`${this.returnsPercent(e.target.currentTime,e.target.duration)}%`
+                S.s("#duration").innerText=`${this.formatsDate(this.video.currentTime)} / ${this.formatsDate(e.target.duration)}`
+                S.s(".listC p")?this.selectCurrentScene(S.s("#modal_gallery")):0
             }
         })
     }
     listenGallery(){
         this.video.onplaying=e=>{
-            document.querySelector("#gallery").style.visibility="visible"
+            S.s("#gallery").style.visibility="visible"
             this.videoGalleryGenerator()
             .then(res=>{
-                this.selectCurrentScene(document.querySelector("#modal_gallery"))
+                this.selectCurrentScene(S.s("#modal_gallery"))
                 console.log(res)
             })
             .catch(err=>{console.log(err)})
         }
-        document.querySelector("#gallery").addEventListener("click",e=>{
-            let g = document.querySelector("#modal_gallery")
+        S.s("#gallery").addEventListener("click",e=>{
+            let g = S.s("#modal_gallery")
             g.hidden?g.hidden=false:g.hidden=true
         })
     }
     listenerScreen(){
-        document.querySelector("#screen").style.cursor="pointer"
-        document.querySelector("#screen").addEventListener("click",e=>{
+        S.s("#screen").style.cursor="pointer"
+        S.s("#screen").addEventListener("click",e=>{
             this.video.requestFullscreen().then(res=>console.log(res))
         })
     }
@@ -181,17 +182,18 @@ class Controller{
             let time = this.convertToNumbers(e.querySelector("p").innerText)
             let video = this.convertToNumbers(this.formatsDate(this.video.currentTime))
             this.compareArray(time,video)?e.querySelector("img").style.background="green":e.querySelector("img").style.background="none"
-            el.scrollTo(500, 0)
+            console.log(e.offsetWidth)
+            //el.scrollTo(500, 0)
         })
     }
     videoGalleryGenerator(){
         return new Promise((resolve,reject)=>{
             let obj = this.video
             if(obj.src){
-                document.querySelector("#modal_gallery ul").innerHTML=""
+                S.s("#modal_gallery ul").innerHTML=""
                 let duration = obj.duration
                 for(let l=0;l<duration;l+=10){
-                    let el = this.createEl(document.querySelector("#modal_gallery ul"),"li","class","listC")
+                    let el = this.createEl(S.s("#modal_gallery ul"),"li","class","listC")
                     el.innerHTML=`<img src="img/video-icon-red.png">`
                     el.innerHTML+=`<p>${this.formatsDate(l)}</p>`
                     el.addEventListener("click",e=>{
@@ -222,14 +224,14 @@ class Controller{
         this.modalVideo.setAttribute("class","close")
         clearInterval(this.currentTimeLoop)
         this.video.src=""
-        document.querySelector("#modal_gallery").hidden=true
-        document.querySelector("#gallery").style.visibility="hidden"
+        S.s("#modal_gallery").hidden=true
+        S.s("#gallery").style.visibility="hidden"
     }
     modalMoveOpen(el){
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
-            if(this.promise){this.exchangeInternalElements(document.querySelector("#menuPlay").classList.value,document.querySelector("#menuPlay"))}
+            if(this.promise){this.exchangeInternalElements(S.s("#menuPlay").classList.value,S.s("#menuPlay"))}
             this.saveAssistedDuration()
             
         }
@@ -268,7 +270,7 @@ class Controller{
         this.file.addEventListener("change",e=>{
              this.model.uploadTask(e.target.files)
              .then(ress=>{
-                document.querySelector("#progress").hidden=true
+                S.s("#progress").hidden=true
                 ress.forEach(resp=>{
                     this.model.getFireBaseRef("files").push().set({
                         name:resp.name,
@@ -287,7 +289,7 @@ class Controller{
            
             })
             
-        document.querySelector("button").addEventListener("click",e=>{this.file.click()})
+        S.s("button").addEventListener("click",e=>{this.file.click()})
     }
     
     loadPlaylist(){

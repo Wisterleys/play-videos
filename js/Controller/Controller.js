@@ -180,7 +180,7 @@ class Controller{
     moveScroll(el,i){
         let lines = document.querySelectorAll(".listC");
         if(lines){
-            el.scrollTo(lines[i].offsetLeft, 0)
+            el.scrollTo(lines[i].offsetLeft-((el.offsetWidth/2)-(lines[i].offsetWidth/2)),0)
         }
     }
     selectCurrentScene(el){

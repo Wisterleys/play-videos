@@ -177,13 +177,18 @@ class Controller{
     compareArray(array,array_two){// this method only accepts an array that has 3 index. It is linked directly to meet the needs of the selectCurrentScene () method
         return array[0]==array_two[0]&&array[1]==array_two[1]&&array_two[2]>=array[2]&&array_two[2]<array[2]+10
     }
+    moveScroll(el,i){
+        let lines = document.querySelectorAll(".listC");
+        if(lines){
+            el.scrollTo(lines[i].offsetLeft, 0)
+        }
+    }
     selectCurrentScene(el){
         el.querySelectorAll("li").forEach((e,i)=>{
             let time = this.convertToNumbers(e.querySelector("p").innerText)
             let video = this.convertToNumbers(this.formatsDate(this.video.currentTime))
             this.compareArray(time,video)?e.querySelector("img").style.background="green":e.querySelector("img").style.background="none"
-            this.compareArray(time,video)?el.scrollTo(i*100, 0):0
-  
+            this.compareArray(time,video)?this.moveScroll(el,i):0
         })
     }
     videoGalleryGenerator(){

@@ -238,32 +238,13 @@ figcaption:hover{
     background-position: 20% 50%;
     animation: icon_close .1s;
 }
-@keyframes icon_close{
-    from{
-        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
-        background-position: 20% 50%;
-    }
-    to{
-        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
-        background-position: 80% 50%;
-    }
-}
+
 .active{
     background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
     background-position: 80% 50%;
     animation: play .1s;
 }
-@keyframes play{
-    from{
-        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
-        background-position: 80% 50%;
-    }
-    to{
-        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
-        background-position: 20% 50%;
-    }
-    
-}
+
 #menuPlay div#t{
     width: 0px; 
     height: 0px; 
@@ -290,7 +271,33 @@ figcaption:hover{
     background: black;
     transform: translate(-70%,50%);
 }
-
+#screen{
+    width: 20px;
+    transition: all 1s;
+}
+#screen:hover{
+    background: rgba(0,0,0,.6);
+}
+#screen *{
+    width: 25%;
+    font-size: 50%;
+}
+#screen #topL{
+    float: left;
+    transform: rotateY(180deg) rotate(180deg);
+}
+#screen #bottomL{
+    float: left;
+    clear: left;
+}
+#screen #topR{
+    float: right;
+    transform: translateY(-100%) rotate(180deg);
+}
+#screen #bottomR{
+    float: right;
+    transform: translateX(100%) rotateY(180deg);
+}
 .box article{width: 95%; padding: 2px;}
 .box header{background-color: rgb(189, 32, 32);width: 100%;margin:0px;}
 .box header h1{text-align: center;float: none;}

@@ -45,3 +45,27 @@
         background-position: 100% 50%;
     }
 }
+
+/*  Icon */
+@keyframes icon_close{
+    from{
+        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
+        background-position: 20% 50%;
+    }
+    to{
+        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
+        background-position: 80% 50%;
+    }
+}
+
+@keyframes play{
+    from{
+        background: linear-gradient(90deg,rgb(21, 139, 71),rgba(21, 139, 71),rgba(255, 255, 255),rgba(21, 139, 71),rgba(21, 139, 71));
+        background-position: 80% 50%;
+    }
+    to{
+        background: linear-gradient(90deg,rgba(189, 32, 32),rgba(189, 32, 32),rgba(255, 255, 255),rgba(189, 32, 32),rgba(189, 32, 32));
+        background-position: 20% 50%;
+    }
+    
+}

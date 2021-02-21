@@ -202,7 +202,14 @@ class Controller{
                     el.innerHTML=`<img src="img/video-icon-red.png">`
                     el.innerHTML+=`<p>${this.formatsDate(l)}</p>`
                     el.addEventListener("click",e=>{
-                        this.video.currentTime=l
+                        this.promise=false
+                        this.video.pause()
+                        this.video.currentTime=l;
+                        this.video.play().then(res=>{
+                            this.promise=true
+                            this.exchangeInternalElements("inactive",S.s("#menuPlay"),`<div id="t"></div>`)
+                            console.log(res)
+                        })
                     })
                 }
                 resolve({info:"ok"})
@@ -236,7 +243,7 @@ class Controller{
         if(this.getData(el)){
             this.modalVideo.setAttribute("class","opeen")
             this.video.currentTime=localStorage.getItem(JSON.parse(this.video.dataset.key)["key"])?parseInt(JSON.parse(localStorage.getItem(JSON.parse(this.video.dataset.key)["key"]))["currentTime"]):0
-            if(this.promise){this.exchangeInternalElements(S.s("#menuPlay").classList.value,S.s("#menuPlay"))}
+            if(this.promise){ this.exchangeInternalElements("inactive",S.s("#menuPlay"),`<div id="t"></div>`)}
             this.saveAssistedDuration()
             
         }
@@ -329,13 +336,13 @@ class Controller{
     toggle(vet){// need to pass three values index 0 1 2
         return vet[1]==vet[0]?vet[2]:vet[1]
     }
-    exchangeInternalElements(classe,el){
+    exchangeInternalElements(classe,el,eltwo=false){
         if(this.promise){
             this.promise=false
             let ell = el.innerHTML
             el.classList.remove(classe)
             el.classList.add(this.toggle([classe,"inactive","active"]))
-            el.innerHTML=this.toggle([ell,`<div id="pl"></div><div id="pr"></div>`,`<div id="t"></div>`])
+            el.innerHTML=this.toggle([!eltwo?ell:eltwo,`<div id="pl"></div><div id="pr"></div>`,`<div id="t"></div>`])
             if(el.innerHTML==`<div id="pl"></div><div id="pr"></div>`){this.video.play();this.promise=true}
             else {this.video.pause();this.promise=true}
         }

@@ -210,7 +210,14 @@ figcaption:hover{
     margin:0;
     padding:0;
     transform: translateY(-103%);
-    background:rgba(0, 0, 0, 0.363)
+    background:rgba(0, 0, 0, 0.363);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 1s;
+}
+main article #mainV:hover + #menu, #menu:hover{
+    opacity: 1;
+    visibility: visible;
 }
 #menu ul{
     padding: 0;

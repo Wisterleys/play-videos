@@ -71,9 +71,10 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
     text-align: center;
 }
 #modal_gallery{
-    position: fixed;
+    position: absolute;
+    top: 0px;
     width: 100%;
-    transform: translateY(170%);
+    transform: translateY(-100%);
     overflow-x: auto;
     z-index: 1;
     background: rgba(0, 0, 0, 0.253);
@@ -311,11 +312,11 @@ figcaption:hover{
 .box ul li{margin-left: 10px;}
 .box input{padding: 10px;}
 
-@media only screen and (max-width:680px){
+/* @media only screen and (max-width:680px){
     #modal_gallery{
         transform: translateY(28%);
     }
-}
+} */
 @media only screen and (max-width:380px){
     main article #video{
         width: 85%;

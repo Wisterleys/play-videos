@@ -6,7 +6,7 @@ main header button{margin:0;padding: 10px;float: right;border-radius:5px/10px; b
 main header button:active{background: linear-gradient(45deg,rgb(5, 173, 61),rgb(5, 173, 61),rgb(255,255,255),rgb(5, 173, 61),rgb(5, 173, 61))}
 main header input{width:70%;margin:auto;padding: 5px;clear: right;}
 main article#main{width: 100%;height:900px;margin:auto;overflow: auto;}
-main article #video{position:fixed;top:0px;width: 80%;height:60%;background-color:rgba(236, 243, 238, 0.733);z-index: 0;color:white;}
+main article #video{position:fixed;top:0px;width: 80%;height:90%;background-color:rgba(236, 243, 238, 0.733);z-index: 0;color:white;}
 main article #video video,iframe{width: 100%;height:100%;}
 main article #video video{width: 100%;padding: 0;margin: 0;}
 main article #video marquee{width: 100%;padding: 0;margin: 0;}
@@ -73,7 +73,7 @@ main footer article aside #face img{width: 25%;margin:0;padding:0;}
 #modal_gallery{
     position: fixed;
     width: 100%;
-    height: 50%;
+    height: 100%;
     transform: translateY(20%);
     overflow-x: auto;
     z-index: 1;
@@ -311,3 +311,12 @@ figcaption:hover{
 .box ul{list-style: none;display: flex;padding: 1;}
 .box ul li{margin-left: 10px;}
 .box input{padding: 10px;}
+
+
+@media only screen and (max-width:380px){
+    main article #video{
+        width: 85%;
+        height: 50%;
+       /*  transform: translateY(20%); */
+    }
+}

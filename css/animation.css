@@ -1,27 +1,31 @@
 .fixed{
-    transform: translate(-150%,10%);
+    transform: translate(-150%,5%);
 }
+/* MODAL */
 .close{
-    transform: translate(-150%,10%);
+    transform: translate(-150%,5%);
     animation: close 1s;   
 }
 @keyframes close{
-    from{transform: translate(10%,10%);}
-    to{transform: translate(-150%,10%);}
+    from{transform: translate(10%,5%);}
+    to{transform: translate(-150%,5%);}
 }
 .opeen{
-    transform: translate(10%,10%);
+    transform: translate(10%,5%);
     animation: opeen 1s;   
 }
 @keyframes opeen{
-    from{transform: translate(-150%,10%);}
-    to{transform: translate(10%,10%);}
+    from{transform: translate(-150%,5%);}
+    to{transform: translate(10%,5%);}
 }
+/* ================= */
+
 .box_open{
     transform: translate(45%,50%);
     animation: box_open 1s;
     display: block;
 }
+
 @keyframes box_open{
     from{transform: translate(45%,-150%);}
     to{transform: translate(45%,50%);}

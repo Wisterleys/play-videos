@@ -119,20 +119,16 @@ main footer article aside #face img{width: 100%;margin:0;padding:0;}
     visibility:hidden;
 }
 #playList{
-    width: 95%;
-    padding: 0;
-    margin:auto;
-    list-style: none;
-    align-items: center;
+    padding: 0px;
+    width: 99%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-rows: 1fr;
+    grid-gap: 20px;
+    list-style-type: none;
     color:white;
 }
-#playList li{
-    display: inline-block;
-    width: 150px;
-    margin:2px;
-    padding: 5px;
-    align-items: center;
-}
+
 #playList li figure{
     padding: 5px;
     margin: 0;

@@ -5,7 +5,7 @@ main header h1{margin:0;padding: 0;text-align: center;}
 main header button{margin:0;padding: 10px;border-radius:5px/10px; background: linear-gradient(45deg,rgb(173, 5, 5),rgb(173, 5, 5),rgb(255,255,255),rgb(173, 5, 5),rgb(173, 5, 5));color:rgb(255, 255, 255);cursor: pointer;text-shadow: 0px 0px 2px black,0px 0px 2px black;}
 main header button:active{background: linear-gradient(45deg,rgb(5, 173, 61),rgb(5, 173, 61),rgb(255,255,255),rgb(5, 173, 61),rgb(5, 173, 61))}
 main header input{width:70%;margin:auto;padding: 5px;clear: right;}
-main article#main{width: 100%;height:900px;margin:auto;overflow: auto;}
+main article#main{width: 100%;height:100vh;margin:auto;overflow: auto;}
 main article #video{position:fixed;top:0px;width: 80%;height:90%;background-color:rgba(236, 243, 238, 0.733);z-index: 0;color:white;}
 main article #video video,iframe{width: 100%;height:100%;}
 main article #video video{width: 100%;padding: 0;margin: 0;}
@@ -122,7 +122,7 @@ main footer article aside #face img{width: 100%;margin:0;padding:0;}
     padding: 0px;
     width: 99%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
     grid-template-rows: 1fr;
     grid-gap: 20px;
     list-style-type: none;

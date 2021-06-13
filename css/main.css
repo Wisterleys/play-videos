@@ -178,11 +178,13 @@ figcaption:hover{
 .info_box{
     width: calc(100%/5);
     float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 100%;background-color: black;color: white;
     border:1px solid white;
     transition: background .5s;
-    border-radius: 360px;
-    text-align: center;
+    border-radius: 180px;
     cursor: pointer;
 }
 .info_box:hover{

@@ -1,8 +1,9 @@
+@import url(btn-upload.css);
 body{margin:0;padding: 0;background:rgb(49, 47, 47);}
-main{width: 100%;background:linear-gradient(90deg,rgb(27, 7, 21),rgb(0, 0, 0),rgb(27, 1, 19) );font-family: Arial, Helvetica, sans-serif;}
-main header{display:flex;justify-content: space-between; width: 100%;background-color:rgba(0, 0, 0, 0.253);color:white;margin-bottom: 5px;overflow:hidden;}
+main{width: 100%;background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);font-family: Arial, Helvetica, sans-serif;}
+main header{display:flex;justify-content: space-between;align-items: center; width: 100%;background-color:rgba(0, 0, 0, 0.253);color:white;margin-bottom: 5px;overflow:hidden;}
 main header h1{margin:0;padding: 0;text-align: center;}
-main header button{margin:0;padding: 10px;border-radius:5px/10px; background: linear-gradient(45deg,rgb(173, 5, 5),rgb(173, 5, 5),rgb(255,255,255),rgb(173, 5, 5),rgb(173, 5, 5));color:rgb(255, 255, 255);cursor: pointer;text-shadow: 0px 0px 2px black,0px 0px 2px black;}
+/*main header button{margin:0;padding: 10px;border-radius:5px/10px; background: linear-gradient(45deg,rgb(173, 5, 5),rgb(173, 5, 5),rgb(255,255,255),rgb(173, 5, 5),rgb(173, 5, 5));color:rgb(255, 255, 255);cursor: pointer;text-shadow: 0px 0px 2px black,0px 0px 2px black;}*/
 main header button:active{background: linear-gradient(45deg,rgb(5, 173, 61),rgb(5, 173, 61),rgb(255,255,255),rgb(5, 173, 61),rgb(5, 173, 61))}
 main header input{width:70%;margin:auto;padding: 5px;clear: right;}
 main article#main{width: 100%;height:900px;margin:auto;overflow: auto;}

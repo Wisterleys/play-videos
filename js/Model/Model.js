@@ -39,7 +39,7 @@ class Model{
         [...files].forEach(file => {
             promises.push(new Promise((resolve,reject)=>{
                 let filename_part = file.name.split(".");
-                let filename = filename_part[0]+Date.now()+"."+filename_part[1]
+                let filename = filename_part[0]+"-"+Date.now()+"."+filename_part[1]
                 let fileRef = firebase.storage().ref("/files").child(filename)
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{

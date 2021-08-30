@@ -284,8 +284,10 @@ class Controller{
              .then(ress=>{
                 S.s("#progress").hidden=true
                 ress.forEach(resp=>{
+                    const part = resp.name.split("-")
+                    const name = part[0]
                     this.model.getFireBaseRef("files").push().set({
-                        name:resp.name.replace(/\d+/,""),
+                        name,
                         nameFile:resp.name,
                         type:resp.type,
                         contentType:resp.contentType,

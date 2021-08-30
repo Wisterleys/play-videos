@@ -285,7 +285,7 @@ class Controller{
                 S.s("#progress").hidden=true
                 ress.forEach(resp=>{
                     this.model.getFireBaseRef("files").push().set({
-                        name:resp.name,
+                        name:resp.name.replace(/\d+/,""),
                         nameFile:resp.name,
                         type:resp.type,
                         contentType:resp.contentType,
@@ -332,7 +332,7 @@ class Controller{
         })
     }
     //----------------------------------------------------
-    //PLAY CONTROLS
+    // CONTROLS PLAY
     toggle(vet){// need to pass three values index 0 1 2
         return vet[1]==vet[0]?vet[2]:vet[1]
     }

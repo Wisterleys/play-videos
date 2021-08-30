@@ -25,7 +25,7 @@ class Model{
             this.deleteFirebase(json.key)
                 resolve(res)
             })
-            .catch(erro=>{reject(erro)})
+            .catch(erro=>{reject([erro,json])})
             })
     }
     getFireBaseRef(reff="files"){

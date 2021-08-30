@@ -158,7 +158,7 @@ class Controller{
             this.videoGalleryGenerator()
             .then(res=>{
                 this.selectCurrentScene(S.s("#modal_gallery"))
-                console.log(res.info)
+                //console.log(res.info)
             })
             .catch(err=>{console.log(err)})
         }

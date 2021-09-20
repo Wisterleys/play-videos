@@ -288,7 +288,6 @@ class Controller{
         this.file.addEventListener("change",e=>{
              this.model.uploadTask(e.target.files)
              .then(ress=>{
-                S.s("#progress").hidden=true
                 ress.forEach(resp=>{
                     const part = resp.name.split("-")
                     const name = part[0]

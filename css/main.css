@@ -27,7 +27,7 @@ main footer article aside #face{width:25px;margin:5px;padding:0;}
 main footer article aside #face img{width: 100%;margin:0;padding:0;}
 
 
-#progress{
+.progress{
     width: 100%;
     height: 20px;
     border:2px solid black;
@@ -35,7 +35,7 @@ main footer article aside #face img{width: 100%;margin:0;padding:0;}
     overflow: hidden;
     background-color: rgb(117, 113, 108);
 }
-#progress div{
+.progress div{
     width: 50%;
     height: 20px;
     background: linear-gradient(90deg,rgb(65, 21, 141),rgb(255,255,255),rgb(65, 21, 141));

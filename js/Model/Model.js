@@ -34,26 +34,48 @@ class Model{
     returnsPercent(value,total){
         return value*100/total
     }
+    loadingTemplate(){
+        /*
+            <div id="progress" hidden>
+                <div></div>
+            </div>
+        */
+       let div = this.createEl(document.querySelector("#barra"),'div','class','progress')
+       this.createEl(div,'div','class','')
+       return div;
+
+    }
+    createEl(parentEl,nameEl,attEl,valeuEl){
+        let el = document.createElement(nameEl)
+        let att = document.createAttribute(attEl)
+        att.value=valeuEl
+        el.setAttributeNode(att)
+        parentEl.appendChild(el)
+        return el;
+    }
     uploadTask(files){
         let promises=[];
         [...files].forEach(file => {
+            let progress = this.loadingTemplate();
             promises.push(new Promise((resolve,reject)=>{
                 let filename_part = file.name.split(".");
                 let filename = filename_part[0]+"-"+Date.now()+"."+filename_part[1]
                 let fileRef = firebase.storage().ref("/files").child(filename)
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
-                    document.querySelector("#progress").hidden=false
-                    document.querySelector("#progress div").style.width=`${this.returnsPercent(snapshot._delegate.bytesTransferred,snapshot._delegate.totalBytes)}%`
+                    progress.hidden=false
+                    progress.querySelector("div").style.width=`${this.returnsPercent(snapshot._delegate.bytesTransferred,snapshot._delegate.totalBytes)}%`
                 },erro=>{
                     reject(erro)
                 },()=>{
                     task.snapshot.ref.getDownloadURL().then(downloadURL=>{
                         task.snapshot.ref.updateMetadata({ customMetadata: { downloadURL }}).then(metadata=>{
                          resolve(metadata)
+                         progress.remove()
                        }).catch( error => {
                          console.error( 'Error update metadata:', error)
                          reject( error ) 
+                         progress.remove()
                        })
                     })
                 })

@@ -64,6 +64,9 @@ class Model{
                 let task = fileRef.put(file)
                 task.on("state_changed",snapshot=>{
                     progress.hidden=false
+                    progress.querySelector("div").innerHTML=filename_part[0]
+                    progress.querySelector("div").style.textAlign='center'
+                    progress.querySelector("div").style.color="white"
                     progress.querySelector("div").style.width=`${this.returnsPercent(snapshot._delegate.bytesTransferred,snapshot._delegate.totalBytes)}%`
                 },erro=>{
                     reject(erro)
